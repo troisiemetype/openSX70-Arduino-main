@@ -32,3 +32,22 @@
  *
  * Complete license terms are available at : https://creativecommons.org/licenses/by-nc/4.0/legalcode
  */
+
+#ifndef OPENSX70_DS2408_H
+#define OPENSX70_DS2408_H
+
+#include <Arduino.h>
+#include <DS2408.h>
+
+#define ONE_WIRE_BUS_PORT S2
+DS2408 ds(ONE_WIRE_BUS_PORT);
+Device dongleDevice;
+uint8_t device_count = 0;
+//
+uint8_t readDevice;
+
+uint8_t selector ;
+bool switch1 ;
+bool switch2 ;
+
+#endif

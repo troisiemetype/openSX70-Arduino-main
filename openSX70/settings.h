@@ -88,8 +88,8 @@ const uint8_t S2 = A4;					// LOW = close
 const uint8_t S3 = 8;					// LOW = close
 // const uint8_t S4						// Not used
 const uint8_t S5 = 7;					// LOW = close
-const uint8_t S8 = A1;					// HIGH = close
-const uint8_t S9 = A0;					// HIGH = close
+const uint8_t S8 = A1;					// HIGH = close. Pulled down by tension dividor resistor on board
+const uint8_t S9 = A0;					// HIGH = close. Ditto.
 
 // Actuators
 const uint8_t Solenoid1 = 3;			// Driven through mosfet for high power
