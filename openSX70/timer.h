@@ -33,50 +33,57 @@
  * Complete license terms are available at : https://creativecommons.org/licenses/by-nc/4.0/legalcode
  */
 
-#ifndef OPENSX70_EEPROM_H
-#define OPENSX70_EEPROM_H
+#ifndef OPENSX70_TIMER_H
+#define OPENSX70_TIMER_H
 
 #include <Arduino.h>
-#include <EEPROM.h>
 #include "open_sx70.h"
 
-/*
- * EEPROM is used for longterm storage of variables used by the programm.
- * Addresses are used as follow :
- * Address		size (bytes)	content 			use
- * 0			1				'S'					initialisation purpose
- * 1			1				'X'					ditto
- * 2
- * 3			1/2 ?			actual pack			absolute pack counter ?
- * 4			1				current picture		current pack picture counter
- * 10			2				eeAdress			eeprom adress pointer
- * 13			1/2 ?			ActualPicture 		counter from the begining
- * 20			1				cISO				iso value for dongleless use
- *
- */
+// Original functions
+void BeepTimerDelay();
+void LEDTimerDelay();
+void BlinkTimerDelay();
+int BlinkBeep(uint16_t interval, uint16_t timer, uint8_t pin, uint8_t type);
+bool beep(bool state, uint8_t pin);
+void simpleBlink(uint8_t times);
 
-// Better to have this two addresses declared globaly as they are used in several points of the code
-const uint8_t EEPROM_ADD_CURRENT_PICTURE = 4;
-const uint8_t EEPROM_ADD_EEADDRESS = 10;
-const uint8_t EEPROM_ADD_ACTUAL_PICTURE = 13;
-const uint8_t EEPROM_ADD_CISO = 20;
+// Timer class
+// This is derived for the Timer library from github.com/troisiemetype/Timer
+// It provides simple functions to set a delay for a timer, start, pause and stop it.
+// It can be launched once, for a defined number of loop, or until it is stopped.
+// it's based on the millis function from Arduino core, and as so has to be updated as often as possible.
+class Timer{
+public:
+	enum mode_t{
+		LOOP = -1,
+		ONCE,
+	};
 
-uint16_t ee_eeAddress = 101;
-uint16_t ee_actualPicture = 1;
+	void init();
+	void setDelay(uint32_t delay);
+	void setDelaySeconds(uint16_t delay);
+	void start(int16_t mode=ONCE);
+	void pause();
+	void stop();
 
+	bool update();
 
-void eeprom_init();
-void eeprom_first_init();
+	void addCallback(void *function(void), bool autoremove=true);
+	void removeCallback();
 
-uint8_t eeprom_get_ciso(){return EEPROM.read(EEPROM_ADD_CISO);}
-void eeprom_set_ciso(uint8_t value){EEPROM.put(EEPROM_ADD_CISO, value);}
+protected:
 
-uint8_t eeprom_get_current_picture(){return EEPROM.read(EEPROM_ADD_CURRENT_PICTURE);}
-void eeprom_set_current_picture(uint8_t value){EEPROM.put(EEPROM_ADD_CURRENT_PICTURE, value);}
+	void _exec();
 
-void eepromUpdate();
-void eepromDump();
-void eepromDumpCSV();
+	void (*_function)(void);
 
+	uint32_t _start, _now, _last, _end, _delay;
+	uint16_t _remainingLoops;
+
+	int8_t _mode;
+
+	bool _pause, _running, _autoremove;
+
+};
 
 #endif

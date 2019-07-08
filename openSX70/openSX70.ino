@@ -75,9 +75,9 @@ void setup(){
 	pinMode(S9, INPUT);					// Ditto.
 	pinMode(FFA, OUTPUT);
 	//LIGHTMETER ENABLE AS OUTPUT
-	pinMode(OE_Pin, OUTPUT);
+	pinMode(OE_PIN, OUTPUT);
 	//ENABLING CHIP (LOW)
-	digitalWrite(OE_Pin, LOW);
+	digitalWrite(OE_PIN, LOW);
 
 	digitalWrite(FFA, LOW);           	// make sure I don't fire the flash!
 
@@ -86,7 +86,7 @@ void setup(){
 	eeprom_init();
 
 	cISO = eeprom_get_ciso();
-	if((cISO != 10) && (cSIO != 60)) eeprom_set_ciso(60);
+	if((cISO != 10) && (cISO != 60)) eeprom_set_ciso(60);
 
 	// Device (dongle) enumeration.
 	/* Will come back to it later.
@@ -270,7 +270,7 @@ void loop(){
     Serial.println (switch2);
   */
 #endif
-}
+
 
   //=======================================================================================
   //WHAT TO DO WHEN POWER-UP:
@@ -572,4 +572,5 @@ void loop(){
 #endif
 
 		}
+	}
 }

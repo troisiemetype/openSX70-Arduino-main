@@ -38,8 +38,10 @@
 
 #include <Arduino.h>
 #include "settings.h"
+#include "timer.h"
 #include "eeprom.h"
 #include "switches.h"
+
 #include "ds2408.h"
 
 

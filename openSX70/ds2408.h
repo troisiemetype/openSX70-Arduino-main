@@ -37,6 +37,7 @@
 #define OPENSX70_DS2408_H
 
 #include <Arduino.h>
+#include "open_sx70.h"
 #include <DS2408.h>
 
 #define ONE_WIRE_BUS_PORT S2
@@ -49,5 +50,10 @@ uint8_t readDevice;
 uint8_t selector ;
 bool switch1 ;
 bool switch2 ;
+
+byte Read_DS2408_PIO(uint8_t Slot);
+void Write_DS2408_PIO(uint8_t port, bool ON);
+void initializeDS2408();
+
 
 #endif
