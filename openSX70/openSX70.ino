@@ -574,3 +574,256 @@ void loop(){
 		}
 	}
 }
+
+void FlashBAR(){
+
+#if SIMPLEDEBUG
+	Serial.println ("CAMERA FLASH");
+#endif
+
+	CurrentPicturePack = EEPROM.read(4) ;
+	byte PictureType = 2;
+	eepromUpdate();
+
+
+	//                   byte PictureType = 2;
+	//                   CurrentPicture = EEPROM.read(4) ;
+	//                   eepromUpdate ();
+	HighSpeedPWM();
+	analogWrite(Solenoid2, 255);
+	shutterCLOSE();
+
+
+	mirrorUP();   //Motor Starts: MIRROR COMES UP!!!
+	// todo : replace this with a non blocking function. Or suppress it, as mirrorUP() tests S5.
+	while (digitalRead(S3) != HIGH);            //waiting for S3 to OPEN
+
+	analogWrite (Solenoid2, 130);
+	Ydelay ();                               //S3 is now open start Y-delay (40ms)
+
+	shutterOPEN ();
+	delay (66);
+	//                  delay (80);
+	//Serial.println("FF");
+	digitalWrite(FFA, HIGH);
+	delay (2);
+	analogWrite (Solenoid2, 0);
+	digitalWrite(FFA, LOW);
+	delay (20);
+	shutterCLOSE();
+	delay (200);                             //AGAIN is this delay necessary?
+	mirrorDOWN ();                          //Motor starts, let bring the mirror DOWN
+	delay (200);                             //AGAIN is this delay necessary?
+	shutterOPEN();
+	shots = 0;
+	return;
+}
+
+void DongleFlashF8 (){
+
+#if SIMPLEDEBUG
+	Serial.println ("DONGLE FLASH F8");
+#endif
+
+	//                 byte PictureType = 4;
+	//                 CurrentPicture = EEPROM.read(4) ;
+	//
+	//                 eepromUpdate ();
+
+	if (takePicture == true){
+		byte PictureType = 6;
+		eepromUpdate();
+
+
+		//         HighSpeedPWM ();
+		//         analogWrite(Solenoid2, 255);
+		shutterCLOSE();
+
+
+		mirrorUP();   //Motor Starts: MIRROR COMES UP!!!
+		while (digitalRead(S3) != HIGH);            //waiting for S3 to OPEN
+		
+		//         analogWrite (Solenoid2, 130);
+		Ydelay();                               //S3 is now open start Y-delay (40ms)
+
+
+
+		shutterOPEN();
+		//                  delay (66);
+		delay (80);
+		Write_DS2408_PIO (7, 1); // this is for dongle (jack flash)
+		//                  digitalWrite(FFA, HIGH); //this is for in-camera flash
+		delay (1);
+		//                  analogWrite (Solenoid2,0);
+		//                  digitalWrite(FFA, LOW);
+		Write_DS2408_PIO (7, 0);
+		delay (10u);
+		shutterCLOSE();
+
+		delay (500);
+
+		delay (200);                             //AGAIN is this delay necessary?
+		mirrorDOWN ();                          //Motor starts, let bring the mirror DOWN
+		delay (200);                             //AGAIN is this delay necessary?
+
+		shutterOPEN();
+		shots = 0;
+		return;
+	}
+}
+
+void DongleFlashNormal ()
+{
+
+
+	#if SIMPLEDEBUG
+	Serial.println ("DONGLE FLASH NORMAL");
+	#endif
+
+	if (takePicture == true)
+	/* {
+
+	digitalWrite(FFA, HIGH);
+	Serial.println ("FFA, HIGH");
+	delay (45);
+	//               analogWrite (Solenoid2,0);
+	digitalWrite(FFA, LOW);
+	Serial.println ("FFA, LOW");
+
+	}*/
+	{
+
+		//               byte PictureType = 5;
+		eepromUpdate ();
+
+		HighSpeedPWM ();
+		analogWrite(Solenoid2, 255);
+		shutterCLOSE ();
+
+		mirrorUP();   //Motor Starts: MIRROR COMES UP!!!
+		while (digitalRead(S3) != HIGH);            //waiting for S3 to OPEN
+
+		analogWrite (Solenoid2, 130);
+		Ydelay ();                               //S3 is now open start Y-delay (40ms)
+
+
+		shutterOPEN ();
+		//                  delay (66);
+		delay (80);
+		Write_DS2408_PIO (7, 1);
+		//                  digitalWrite(FFA, HIGH);
+		delay (1);
+		analogWrite (Solenoid2, 0);
+		//                  digitalWrite(FFA, LOW);
+		Write_DS2408_PIO (7, 0);
+		delay (10);
+		shutterCLOSE();
+
+		delay (200);                             //AGAIN is this delay necessary?
+		mirrorDOWN ();                          //Motor starts, let bring the mirror DOWN
+		delay (200);                             //AGAIN is this delay necessary?
+
+		shutterOPEN();
+		shots = 0;
+		return;
+		}
+}
+
+void FastFlash ()
+{
+	Write_DS2408_PIO (7, 1);
+	delay (1);
+	//Serial.println ("Flash!");
+	Write_DS2408_PIO (7, 0);
+	return;
+}
+
+void ManualExposure(){
+	//lets turn off all the LED!!!!
+	digitalWrite(led2, LOW);
+	digitalWrite(led1, LOW);
+
+#if SIMPLEDEBUG
+	Serial.println ("take Manual picture");
+#endif
+	byte PictureType = 0;
+	//                    eepromUpdate ();
+
+	shutterCLOSE ();
+
+	//                  delay (200); //added to fix bad photos
+	delay (100); //added to fix bad photos WITH LESS delay
+
+	mirrorUP();   //Motor Starts: MIRROR COMES UP!!!
+	while (digitalRead(S3) != HIGH);            //waiting for S3 to OPEN
+
+	Ydelay();
+
+	//  startCounterCalibration();
+
+#if SIMPLEDEBUG
+	Serial.print ("--------------------------------------------------CLICK:  ");
+	Serial.println (ShutterSpeed[selector]);
+#endif
+
+	int ShutterSpeedDelay = ((ShutterSpeed[selector])+ShutterConstant) ;
+	if (selector >= 6)
+	{
+		ShutterSpeedDelay = (ShutterSpeedDelay - flashDelay);
+	}
+
+#if SIMPLEDEBUG
+
+	Serial.print("ShutterSpeed[");
+	Serial.print(selector);
+	Serial.print("] :");
+	Serial.println(ShutterSpeed[selector]);
+
+	Serial.print("ShutterConstant:");
+	Serial.println(ShutterConstant);
+
+	Serial.print("ShutterSpeedDelay:");
+	Serial.println(ShutterSpeedDelay);
+
+#endif
+	//	cli();
+	//////
+	sei();
+	shutterOPEN();  //SOLENOID OFF MAKES THE SHUTTER TO OPEN!
+	unsigned long initialMillis = millis();
+	//delay (ShutterSpeedDelay);   
+	while (millis() <= (initialMillis + ShutterSpeedDelay));
+
+	if (selector >= 6) // changed the flash selection
+	{
+		FastFlash ();
+#if SIMPLEDEBUG
+		Serial.println("FF");
+#endif
+	}
+	//    shutterCLOSE ();                                         //close the shutter
+	//   delay (10);
+	//    cli();
+	//    counter = TCNT1;
+	//    sei();
+
+	finish();
+	/*
+	//	Serial.print("Counter:");
+	//	Serial.println(counter);
+	if (switch1 == 1)
+	{
+	shots = ++shots;
+	return;
+	} else if (switch1 == 0)
+	{
+	delay (100);                             //AGAIN is this delay necessary?
+	mirrorDOWN ();                          //Motor starts, let bring the mirror DOWN
+	delay (200);                             //AGAIN is this delay necessary?
+	shutterOPEN();
+	shots = 0;
+	return;
+	}
+	*/
+	return;
+}

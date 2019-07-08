@@ -217,6 +217,10 @@ void simpleBlink (uint8_t times) {
 
 // Timer class definition
 
+Timer::~Timer(){
+  _function = NULL;
+}
+
 //Init the timer
 void Timer::init(){
 	stop();

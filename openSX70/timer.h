@@ -36,9 +36,6 @@
 #ifndef OPENSX70_TIMER_H
 #define OPENSX70_TIMER_H
 
-#include <Arduino.h>
-#include "open_sx70.h"
-
 // Original functions
 void BeepTimerDelay();
 void LEDTimerDelay();
@@ -58,6 +55,9 @@ public:
 		LOOP = -1,
 		ONCE,
 	};
+
+	Timer();
+	~Timer();
 
 	void init();
 	void setDelay(uint32_t delay);

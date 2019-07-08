@@ -36,6 +36,4 @@
 #ifndef OPENSX70_SWITCHES_H
 #define OPENSX70_SWITCHES_H
 
-#include <Arduino.h>
-
 #endif

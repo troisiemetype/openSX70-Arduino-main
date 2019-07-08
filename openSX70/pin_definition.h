@@ -36,8 +36,6 @@
 #ifndef OPENSX70_PINDEF_H
 #define OPENSX70_PINDEF_H
 
-#include <Arduino.h>
-
 // Not sure yet about the utility of this file.
 // Pin definition coulb be centralised in one file, or could be dispatched in input and output files.
 

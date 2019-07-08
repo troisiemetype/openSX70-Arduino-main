@@ -33,8 +33,22 @@
  * Complete license terms are available at : https://creativecommons.org/licenses/by-nc/4.0/legalcode
  */
 
-#ifndef OPENSX70__H
-#define OPENSX70__H
+#ifndef OPENSX70_SYSTEM_H
+#define OPENSX70_SYSTEM_H
+
+void ShutterT();
+void ShutterB();
+void motorON();
+void motorOFF();
+void shutterCLOSE();
+void shutterOPEN();
+void mirrorUP();
+void mirroDOWN();
+void darkslideEJECT();
+void Ydelay();
+void HighSpeedPWM();
+
+
 
 
 

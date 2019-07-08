@@ -33,9 +33,15 @@
  * Complete license terms are available at : https://creativecommons.org/licenses/by-nc/4.0/legalcode
  */
 
-#ifndef OPENSX70__H
-#define OPENSX70__H
+#ifndef OPENSX70_METER_H
+#define OPENSX70_METER_H
 
+void startCounter();
+void startCountercalibration();
+void AutoExposure();
+void finish();
+void PredictedExposure();
+int nearest(int x, int myArray[], int elements, bool sorted)
 
 
 #endif
