@@ -36,12 +36,14 @@
 #ifndef OPENSX70_METER_H
 #define OPENSX70_METER_H
 
+#include "open_sx70.h"
+
 void startCounter();
 void startCountercalibration();
 void AutoExposure();
 void finish();
-void PredictedExposure();
-int nearest(int x, int myArray[], int elements, bool sorted)
+int PredictedExposure();
+int nearest(int x, int myArray[], int elements, bool sorted);
 
 
 #endif

@@ -147,8 +147,8 @@ void shutterCLOSE()
   HighSpeedPWM ();
   analogWrite(Solenoid1, 255);
 
-  delay (PowerDownDelay);                                        //Wait for the SOL#1 in BC position, more tests perhaps need changed to 25
-  analogWrite (Solenoid1, PowerDown);
+  delay (POWER_DOWN_DELAY);                                        //Wait for the SOL#1 in BC position, more tests perhaps need changed to 25
+  analogWrite (Solenoid1, POWER_DOWN);
 
   return;
   //return;
@@ -367,10 +367,84 @@ void HighSpeedPWM ()
 
   TCCR2A = bit (WGM20) | bit (WGM21) | bit (COM2B1); // fast PWM, clear OC2A on compare
   TCCR2B = bit (WGM22) | bit (CS20);         // fast PWM, no prescaler
-  OCR2A =  n;                                // from table
-  OCR2B = ((n + 1) / 2) - 1;                 // 50% duty cycle
+  OCR2A =  TIMER2_TOP;                                // from table
+  OCR2B = ((TIMER2_TOP + 1) / 2) - 1;                 // 50% duty cycle
 
   //THIS AFFECTS OUTPUT 3 AND OUTPUT 11 (Solenoid1 and Solenoid2)
 
 }
 //***************************************************************************************************************************************
+
+
+int checkButton() {
+  pinMode(S1, INPUT_PULLUP);
+  int event = 0;
+  buttonVal = digitalRead(S1);
+  // Button pressed down
+  if (buttonVal == LOW && buttonLast == HIGH && (millis() - upTime) > debounce)
+  {
+    downTime = millis();
+    ignoreUp = false;
+    waitForUp = false;
+    singleOK = true;
+    holdEventPast = false;
+    //       longHoldEventPast = false;
+    if ((millis() - upTime) < DCgap && DConUp == false && DCwaiting == true)  DConUp = true;
+    else  DConUp = false;
+    DCwaiting = false;
+  }
+  // Button released
+  else if (buttonVal == HIGH && buttonLast == LOW && (millis() - downTime) > debounce)
+  {
+    if (not ignoreUp)
+    {
+      upTime = millis();
+      if (DConUp == false) DCwaiting = true;
+      else
+      {
+        event = 2;
+        DConUp = false;
+        DCwaiting = false;
+        singleOK = false;
+      }
+    }
+  }
+  // Test for normal click event: DCgap expired
+  if (buttonVal == HIGH && (millis() - upTime) >= DCgap && DCwaiting == true && DConUp == false && singleOK == true && event != 2)
+  {
+    event = 1;
+    DCwaiting = false;
+  }
+  // Test for hold
+  if (buttonVal == LOW && (millis() - downTime) >= holdTime) {
+    // Trigger "normal" hold
+    if (not holdEventPast)
+    {
+      event = 3;
+      waitForUp = true;
+      ignoreUp = true;
+      DConUp = false;
+      DCwaiting = false;
+      //downTime = millis();
+      holdEventPast = true;
+    }
+    /*       // Trigger "long" hold
+         if ((millis() - downTime) >= longHoldTime)
+         {
+           if (not longHoldEventPast)
+           {
+             event = 4;
+             longHoldEventPast = true;
+           }
+         } */
+  }
+  buttonLast = buttonVal;
+  return event;
+}
+
+int cancelButton() {
+if ((digitalRead(S1)) == LOW){
+volatile bool TakePicture = false;
+return;
+}
+}

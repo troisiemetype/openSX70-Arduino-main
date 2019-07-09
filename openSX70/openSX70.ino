@@ -488,9 +488,9 @@ void loop(){
 			if (Read_DS2408_PIO(0) == 200){
 				cISO = eeprom_get_ciso();
 				if (cISO = 60)
-					output_compare = A600;
+					outputCompare = A600;
 				else if (cISO = 10)
-					output_compare = A100;
+					outputCompare = A100;
 				byte PictureType = 6;
 				eepromUpdate();
 #if SIMPLEDEBUG
@@ -520,7 +520,7 @@ void loop(){
 			//Serial.println ("MANUAL SELECTOR SPEED");
 
 			if ((ShutterSpeed[selector]) == AUTO600){
-				output_compare = A600;
+				outputCompare = A600;
 /*
 				cISO = eeprom_get_ciso();
 				if (cISO != 600){
@@ -538,7 +538,7 @@ void loop(){
 #endif
 				return;
 			} else if ((ShutterSpeed[selector]) == AUTO100){
-				output_compare = A100;
+				outputCompare = A100;
 /*
 				Serial.print("cISO for 600: ");
 				Serial.println(cISO);
@@ -766,7 +766,7 @@ void ManualExposure(){
 	Serial.println (ShutterSpeed[selector]);
 #endif
 
-	int ShutterSpeedDelay = ((ShutterSpeed[selector])+ShutterConstant) ;
+	int ShutterSpeedDelay = ((ShutterSpeed[selector])+shutterConstant) ;
 	if (selector >= 6)
 	{
 		ShutterSpeedDelay = (ShutterSpeedDelay - flashDelay);
@@ -779,8 +779,8 @@ void ManualExposure(){
 	Serial.print("] :");
 	Serial.println(ShutterSpeed[selector]);
 
-	Serial.print("ShutterConstant:");
-	Serial.println(ShutterConstant);
+	Serial.print("shutterConstant:");
+	Serial.println(shutterConstant);
 
 	Serial.print("ShutterSpeedDelay:");
 	Serial.println(ShutterSpeedDelay);

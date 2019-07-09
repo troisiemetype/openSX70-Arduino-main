@@ -36,6 +36,8 @@
 #ifndef OPENSX70_PINDEF_H
 #define OPENSX70_PINDEF_H
 
+#include "open_sx70.h"
+
 // Not sure yet about the utility of this file.
 // Pin definition coulb be centralised in one file, or could be dispatched in input and output files.
 

@@ -36,6 +36,8 @@
 #ifndef OPENSX70_SYSTEM_H
 #define OPENSX70_SYSTEM_H
 
+#include "open_sx70.h"
+
 void ShutterT();
 void ShutterB();
 void motorON();
@@ -43,10 +45,13 @@ void motorOFF();
 void shutterCLOSE();
 void shutterOPEN();
 void mirrorUP();
-void mirroDOWN();
+void mirrorDOWN();
 void darkslideEJECT();
 void Ydelay();
 void HighSpeedPWM();
+
+int checkButton();
+int cancelButton();
 
 
 

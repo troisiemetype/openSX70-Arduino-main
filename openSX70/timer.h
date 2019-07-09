@@ -36,6 +36,8 @@
 #ifndef OPENSX70_TIMER_H
 #define OPENSX70_TIMER_H
 
+#include "open_sx70.h"
+
 // Original functions
 void BeepTimerDelay();
 void LEDTimerDelay();

@@ -50,15 +50,15 @@ void eeprom_init(){
 void eeprom_first_init(){
 	EEPROM.write(0, 'S');
 	EEPROM.write(1, 'X');
-	EEPROM.put(10, ee_eeAddress);
-	EEPROM.put(13, ee_actualPicture);
+	EEPROM.put(EEPROM_ADD_EEADDRESS, ee_eeAddress);
+	EEPROM.put(EEPROM_ADD_ACTUAL_PICTURE, ee_actualPicture);
 }
 
 
 void eepromUpdate(){
 
 	//EEPROM OK
-	EEPROM.get (13,ActualPicture);
+	EEPROM.get (13,ee_actualPicture);
 	CurrentPicturePack = (CurrentPicturePack+1);
 
 #if SIMPLEDEBUG
@@ -68,15 +68,15 @@ void eepromUpdate(){
 	//                        byte PictureType = 0;
 
 	byte Shutter = (ShutterSpeed[selector]);
-	//                  Picture MyPicture ={ ActualPicture, CurrentPicture, PictureType, Shutter, lux};
+	//                  Picture MyPicture ={ ee_actualPicture, CurrentPicture, PictureType, Shutter, lux};
 
-	//                  Picture MyPicture ={ ActualPicture, CurrentPicturePack, PictureType, Shutter, counter, sensorValueHIGH };
-	Picture MyPicture = { ActualPicture, CurrentPicturePack, PictureType, Shutter, counter };
+	//                  Picture MyPicture ={ ee_actualPicture, CurrentPicturePack, PictureType, Shutter, counter, sensorValueHIGH };
+	Picture MyPicture = { ee_actualPicture, CurrentPicturePack, PictureType, Shutter, counter };
 
 
 	Serial.println ("*****************************");
 	Serial.print ("Actual picture: ");
-	Serial.println (ActualPicture);
+	Serial.println (ee_actualPicture);
 	Serial.print ("Current picture Pack: ");
 	Serial.println (CurrentPicturePack);
 	Serial.print ("Picture type: ");
@@ -93,18 +93,18 @@ void eepromUpdate(){
 	EEPROM.write(4,CurrentPicturePack);
 	Serial.print ("Picture taken: ");
 	Serial.println (EEPROM.read (4));  
-	EEPROM.put(eeAddress,MyPicture);
+	EEPROM.put(EEPROM_ADD_EEADDRESS,MyPicture);
 	//   EEPROM.get (eeAddress,MyPicture);
-	eeAddress += sizeof(MyPicture);  //Next eeAdress
-	if(eeAddress+sizeof(MyPicture) >= EEPROM.length()) {eeAddress = 0;}  //check for address overflow
+	ee_eeAddress += sizeof(MyPicture);  //Next eeAdress
+	if(ee_eeAddress+sizeof(MyPicture) >= EEPROM.length()) {ee_eeAddress = 0;}  //check for address overflow
 
 	//     EEPROM.update (10,eeAddress);
-	//    ActualPicture = ActualPicture+1;
-	//    EEPROM.update (13,ActualPicture);
+	//    ee_actualPicture = ee_actualPicture+1;
+	//    EEPROM.update (13,ee_actualPicture);
 
-	EEPROM.put (10,eeAddress);
-	ActualPicture = ActualPicture+1;
-	EEPROM.put (13,ActualPicture);    
+	EEPROM.put (10,ee_eeAddress);
+	ee_actualPicture = ee_actualPicture+1;
+	EEPROM.put (13,ee_actualPicture);    
 
 	return;     
 }
@@ -123,19 +123,19 @@ void eepromDump(){
 
 
 	//
-	// int ActualPicture;
+	// int ee_actualPicture;
 	//byte CurrentPicture;
 	//byte PictureType;
 	//int ShutterSpeed;
 
-	//Picture MyPicture = {ActualPicture,CurrentPicture, PictureType, eepromSpeed,  lux};
-	//Picture MyPicture = {ActualPicture,CurrentPicturePack, PictureType, eepromSpeed };
+	//Picture MyPicture = {ee_actualPicture,CurrentPicture, PictureType, eepromSpeed,  lux};
+	//Picture MyPicture = {ee_actualPicture,CurrentPicturePack, PictureType, eepromSpeed };
 
-	Picture MyPicture ={ ActualPicture, CurrentPicturePack, PictureType, eepromSpeed, Counter };
+	Picture MyPicture ={ ee_actualPicture, CurrentPicturePack, PictureType, eepromSpeed, Counter };
 
 	EEPROM.get (eeAddress,MyPicture);
 
-	EEPROM.get(10,eeAddress);
+	EEPROM.get(EEPROM_AD_EEADDRESS,eeAddress);
 
 	int ReadAddress  = (eeAddress - (sizeof(MyPicture)*8));
 
@@ -228,18 +228,18 @@ void eepromDump(){
 
 void eepromDumpCSV(){
 
-	//    int ActualPicture;
+	//    int ee_actualPicture;
 	//    byte CurrentPicture;
 	//    byte PictureType;
 	//    int ShutterSpeed;
 
-	//  Picture MyPicture = {ActualPicture,CurrentPicture, PictureType, eepromSpeed, lux};
+	//  Picture MyPicture = {ee_actualPicture,CurrentPicture, PictureType, eepromSpeed, lux};
 
-	//  Picture MyPicture = {ActualPicture,CurrentPicturePack, PictureType, eepromSpeed, counter, sensorValueHIGH };
+	//  Picture MyPicture = {ee_actualPicture,CurrentPicturePack, PictureType, eepromSpeed, counter, sensorValueHIGH };
 
-	Picture MyPicture = { ActualPicture,CurrentPicturePack, PictureType, eepromSpeed, counter };
+	Picture MyPicture = { ee_actualPicture,CurrentPicturePack, PictureType, eepromSpeed, counter };
 
-	EEPROM.get(10,eeAddress);
+	EEPROM.get(EEPROM_AD_EEADDRESS,eeAddress);
 
 	Serial.begin (9600);
 

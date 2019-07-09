@@ -36,6 +36,8 @@
 #ifndef OPENSX70_EEPROM_H
 #define OPENSX70_EEPROM_H
 
+#include "open_sx70.h"
+
 /*
  * EEPROM is used for longterm storage of variables used by the programm.
  * Addresses are used as follow :

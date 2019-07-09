@@ -36,4 +36,6 @@
 #ifndef OPENSX70_SWITCHES_H
 #define OPENSX70_SWITCHES_H
 
+#include "open_sx70.h"
+
 #endif

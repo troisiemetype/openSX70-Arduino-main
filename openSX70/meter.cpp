@@ -70,7 +70,7 @@ void startCounter()
   //bitSet(TCCR1B ,CS11);                        // Clock on rising edge
   GTCCR = bit (PSRASY);        // reset prescaler now
   
-  OCR1A = output_compare;                // Set output compare value
+  OCR1A = outputCompare;                // Set output compare value
   
 
   TIMSK1 |= (1 << TOIE1);                // Enable compare A Match Interrupt
@@ -150,7 +150,7 @@ void finish()
 int PredictedExposure()
 {
 	//static int PrevExp;
-	//ISO is the Magic Number 
+	//iso is the Magic Number 
 
 	unsigned long interval = 100;
 	//unsigned long counter; defined elsewhere 
@@ -187,26 +187,26 @@ int PredictedExposure()
 //		Serial.println(counter);
 
 	
-		//int  cISO = EEPROM.read(20);
+		//int  ciso = EEPROM.read(20);
 		//EEPROM.read(0);
 		if (cISO == 10)
 		{
-			ISO = A100;
+			iso = A100;
 			//			PredExp = 100000 / counter;
 
 		}
 		else if (cISO == 60)
 		{
-			ISO = A600;
+			iso = A600;
 		}
 
 
 
 		// counter/interval = clicks per ms
-		// ISO = number of clicks as in magic number
-//		PredExp = ISO / ((counter / interval));
+		// iso = number of clicks as in magic number
+//		PredExp = iso / ((counter / interval));
 //		PredExp = (counter / timeMillis);
-		//		PredExp = ISO / ( ((counter) / timeMillis));
+		//		PredExp = iso / ( ((counter) / timeMillis));
 
 
 		//		PredExp = PredExp * 0,99;
@@ -215,8 +215,8 @@ int PredictedExposure()
 
 // timeMillis compensation
 		timeMillis = timeMillis + 6;
-		PredExp = ((ISO * timeMillis) / counter );
-//		PredExp = ((ISO * 100) / counter);
+		PredExp = ((iso * timeMillis) / counter );
+//		PredExp = ((iso * 100) / counter);
 		
 		
 		if (PredExp > 300)
@@ -229,7 +229,7 @@ int PredictedExposure()
 		}
 		/*
 		Serial.print("Magic Number:");
-		Serial.print(ISO);
+		Serial.print(iso);
 		Serial.print(" / timeMillis ");
 		Serial.print(timeMillis);
 		Serial.print(" / counter: ");

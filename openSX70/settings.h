@@ -35,6 +35,9 @@
 
 #ifndef OPENSX70_SETTINGS_H
 #define OPENSX70_SETTINGS_H
+
+#include "open_sx70.h"
+
 /*
  * OrigamiV1 is for dongle selection
  * set to 0 for "normal" uDongle
@@ -64,7 +67,7 @@ const uint16_t A600 = 450;
 
 uint16_t outputCompare = A100;			// Better to initialize variables with a value, even if changed afterward.
 
-uint32_t couter = 0;
+uint32_t counter = 0;
 uint32_t previousMillis = 0;
 
 uint16_t iso = 10;
@@ -73,6 +76,8 @@ uint8_t cISO = 10;						// iso for dongleless store in EEPROM 20.
 uint32_t DoubleExposureTimer = 0;
 
 bool takePicture = false;
+
+const uint8_t TIMER2_TOP = 224;
 
 
 // power down
@@ -166,8 +171,40 @@ uint8_t shots = 0;
  *
  * EEPROM initlization. Same thing, a dedicated .h + .c could increase readibility
  *
- * Picture Struct : As I don't understand its purpose yet, better to leave it appart for now.
  *
  * Function prototypes have to be in dedicated .h files.
  */
+
+
+struct Picture
+{
+  int StructPicture;         //total count of pictures since init
+  byte StructPackPicture;          //pic count within this pack
+  byte StructType;           //picture type
+
+  // PictureType = 0 ---> MANUAL
+  // PictureType = 1 ---> A100
+  // PictureType = 2 ---> FLASH DONGLELESS
+  // PictureType = 4 ---> FLASH F8 DONGLE
+  // PictureType = 6 ---> A600
+  // PictureType = +10 ---> MIRROR DELAY
+  // PictureType = +100 ---> MULTIPLE EXPOSURE
+  // PictureType = +200 ---> TIMER DELAY
+
+  byte StructSpeed;           //shutter speed
+  int Counter;
+  //int StructLightVlow ;      //photodiode read LOW
+  //int StructLightVhigh ;     //photodiode read HIGH
+};
+
+
+
+byte Pack = 1;
+
+int ActualPicture;
+byte CurrentPicturePack;
+byte PictureType;
+byte eepromSpeed;
+int Counter;    //Photodiode stuff
+
 #endif

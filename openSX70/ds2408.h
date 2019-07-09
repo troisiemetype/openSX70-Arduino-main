@@ -36,6 +36,8 @@
 #ifndef OPENSX70_DS2408_H
 #define OPENSX70_DS2408_H
 
+#include "open_sx70.h"
+
 #define ONE_WIRE_BUS_PORT S2
 DS2408 ds(ONE_WIRE_BUS_PORT);
 Device dongleDevice;
