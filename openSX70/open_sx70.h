@@ -37,18 +37,9 @@
 #define OPENSX70_OPENSX70_H
 
 // includes for Arduino environnement
-#include <inttypes.h>
 #include <Arduino.h>
-#include <EEPROM.h>
-#include <DS2408.h>
 
 // Includes for openSX70
 #include "settings.h"
-#include "system.h"
-#include "meter.h"
-#include "timer.h"
-#include "eeprom.h"
-#include "switches.h"
-#include "ds2408.h"
-
+#include "camera.h"
 #endif

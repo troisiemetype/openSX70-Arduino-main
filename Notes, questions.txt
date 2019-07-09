@@ -1,0 +1,7 @@
+Notes, questions !
+
+*
+In setup, what is the purpose of the Picture struct ? I understand it is intended for storing picture parameters, but some are not directly linked to the picture ?
+
+*
+What are the values to be stored in eeprom ? I understand each picture parameters are stored and can be exported once the pack is over ?

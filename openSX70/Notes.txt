@@ -1,9 +1,0 @@
-Todo list !
-
-Must be done :
-
-- Remove all delay() : delay() is a blocking function, it literraly uses the CPU for nothing. Create a non-blocking timer function with polling instead, or an interrupt-based timer.
-
-Could be done :
-- Remove the use of tone. I've read somewhere that it is quite heavy. Indeed it seems to be.
-- Create faster / lighter functions for digital pin handling (Arduino core functions do checkups each time they are used).

@@ -36,8 +36,6 @@
 #ifndef OPENSX70_EEPROM_H
 #define OPENSX70_EEPROM_H
 
-#include "open_sx70.h"
-
 /*
  * EEPROM is used for longterm storage of variables used by the programm.
  * Addresses are used as follow :
@@ -53,28 +51,15 @@
  *
  */
 
-// Better to have this two addresses declared globaly as they are used in several points of the code
-const uint8_t EEPROM_ADD_CURRENT_PICTURE = 4;
-const uint8_t EEPROM_ADD_EEADDRESS = 10;
-const uint8_t EEPROM_ADD_ACTUAL_PICTURE = 13;
-const uint8_t EEPROM_ADD_CISO = 20;
-
-uint16_t ee_eeAddress = 101;
-uint16_t ee_actualPicture = 1;
+// if I understand well the original code, each picture parameters are stored in eeprom for archival purposes.
 
 
-void eeprom_init();
-void eeprom_first_init();
-
-inline uint8_t eeprom_get_ciso(){return EEPROM.read(EEPROM_ADD_CISO);}
-inline void eeprom_set_ciso(uint8_t value){EEPROM.put(EEPROM_ADD_CISO, value);}
-
-inline uint8_t eeprom_get_current_picture(){return EEPROM.read(EEPROM_ADD_CURRENT_PICTURE);}
-inline void eeprom_set_current_picture(uint8_t value){EEPROM.put(EEPROM_ADD_CURRENT_PICTURE, value);}
-
-void eepromUpdate();
-void eepromDump();
-void eepromDumpCSV();
+/* functions
+ *
+ * eeprom first init
+ * eeprom init
+ * getter and setter for values stored
+ */
 
 
 #endif

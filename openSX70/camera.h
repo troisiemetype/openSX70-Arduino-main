@@ -33,9 +33,45 @@
  * Complete license terms are available at : https://creativecommons.org/licenses/by-nc/4.0/legalcode
  */
 
-#ifndef OPENSX70_SWITCHES_H
-#define OPENSX70_SWITCHES_H
+#ifndef OPENSX70_CAMERA_H
+#define OPENSX70_CAMERA_H
 
-#include "open_sx70.h"
+enum camera_state_t{
+	STATE_IDLE = 0,
+	STATE_CLOSE_SHUTTER,
+	STATE_RELEASE_MIRROR,
+	STATE_WAIT_S3,
+	STATE_Y_DELAY,
+	STATE_START_OBTURATION,
+	STATE_INTEGRATE,
+	STATE_STOP_OBTURATION,
+	STATE_EJECT,
+	STATE_WAIT_S5,
+	STATE_HOLD,
+};
+
+enum camera_mode_t{
+	MODE_AUTO = 0,
+	MODE_MANUAL,
+	MODE_B,
+	MODE_T,
+};
+
+
+
+void camera_shutter_open();
+void camera_shutter_maintain();
+void camera_shutter_close();
+
+void camera_flash_exp_open();
+void camera_flash_exp_maintain();
+void camera_flash_exp_close();
+
+void camera_release_mirror();
+void camera_eject();
+void camera_eject_darkslide(); // (= release mirror + eject darkslide)
+
+
+
 
 #endif

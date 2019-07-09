@@ -33,9 +33,7 @@
  * Complete license terms are available at : https://creativecommons.org/licenses/by-nc/4.0/legalcode
  */
 
-#ifndef OPENSX70__H
-#define OPENSX70__H
+#include "open_sx70.h"
 
-
-
-#endif
+camera_state_t camera_state = STATE_IDLE;
+camera_mode_t camera_mode = MODE_AUTO;
