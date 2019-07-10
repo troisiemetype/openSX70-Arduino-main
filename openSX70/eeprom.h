@@ -61,5 +61,14 @@
  * getter and setter for values stored
  */
 
+void eeprom_first_init();
+void eeprom_init();						// calls eeprom_first_init() if first run
+
+void eeprom_set_iso();
+void eeprom_get_iso();
+
+void eeprom_store_data();
+void eeprom_export_data();
+void eeprom_export_data_csv();
 
 #endif

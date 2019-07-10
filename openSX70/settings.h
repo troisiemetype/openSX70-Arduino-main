@@ -36,6 +36,14 @@
 #ifndef OPENSX70_SETTINGS_H
 #define OPENSX70_SETTINGS_H
 
+#define DEFAULT_ISO       100
+
+#define METER_CHIP        TSL237T
+
 #define Y_DELAY           40                // debounce delay after mirror release
+
+#if (METER_CHIP == TSL237T)
+#include "TSL237T.h"
+#endif
 
 #endif

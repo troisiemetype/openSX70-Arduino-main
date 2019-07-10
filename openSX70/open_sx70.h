@@ -41,5 +41,8 @@
 
 // Includes for openSX70
 #include "settings.h"
+#include "eeprom.h"
+#include "meter.h"
 #include "camera.h"
+#include "DigitalPin.h"
 #endif

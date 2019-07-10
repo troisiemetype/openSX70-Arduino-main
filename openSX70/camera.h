@@ -57,7 +57,8 @@ enum camera_mode_t{
 	MODE_T,
 };
 
-
+void camera_pose_auto();
+void camera_pose_manual();
 
 void camera_shutter_open();
 void camera_shutter_maintain();

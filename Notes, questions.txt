@@ -5,3 +5,9 @@ In setup, what is the purpose of the Picture struct ? I understand it is intende
 
 *
 What are the values to be stored in eeprom ? I understand each picture parameters are stored and can be exported once the pack is over ?
+
+*
+What are flash mode ?
+Flashbar is quite obvious, it's the original flash to be mounted in the socket. Auto-exposure and fixed shutter speed.
+DongleFlash is flash connected to the dongle, with mechanical auto-exposure (solenoid S2) and focus compensation. (and fixed shutter speed ?)
+DongleFlashF8 is for flash connected to the dongle, without auto-exposure. Could be used with 

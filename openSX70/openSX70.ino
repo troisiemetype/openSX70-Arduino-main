@@ -48,7 +48,9 @@
  *
  */
 
+
 void setup(){
+
 
 	/* OUTPUT pins initialisation.
 	 *		MOTOR
