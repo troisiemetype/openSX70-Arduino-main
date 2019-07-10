@@ -39,4 +39,8 @@
 // Meter deals with integrated lightmeter.
 // It should provide generic functions to be called by the main program,
 // which functions call whatever is needed for a specific light measurement chip.
+
+void meter_init();
+void meter_compute();
+
 #endif

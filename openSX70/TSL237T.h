@@ -37,5 +37,10 @@
 #define OPENSX70_TSL237T_H
 
 
+// Init timer 1 for reading sensor, enable sensor
+void tsl237_init();
+
+// Start to integrate measure.
+void tsl237_start_integration(const bool& sensivity);
 
 #endif

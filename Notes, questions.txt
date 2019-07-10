@@ -10,4 +10,7 @@ What are the values to be stored in eeprom ? I understand each picture parameter
 What are flash mode ?
 Flashbar is quite obvious, it's the original flash to be mounted in the socket. Auto-exposure and fixed shutter speed.
 DongleFlash is flash connected to the dongle, with mechanical auto-exposure (solenoid S2) and focus compensation. (and fixed shutter speed ?)
-DongleFlashF8 is for flash connected to the dongle, without auto-exposure. Could be used with 
+DongleFlashF8 is for flash connected to the dongle, without auto-exposure. Could be used with fill-in flash and light integration ?
+
+*
+See what kind of flag system can be made so ISR in lightmeter-specific chip can be read from the main loop
