@@ -56,7 +56,7 @@ enum camera_mode_t{
 };
 
 // state functions. These should return a state and take a parameter
-void camera_state();
+void camera_state_main();
 void camera_state_idle();
 void camera_state_self_timer();
 void camera_state_shutter_close();
@@ -68,26 +68,15 @@ void camera_state_ejection();
 
 // transition functions
 void camera_start_self_timer();
-
-void camera_shutter_close();
-void camera_shutter_half();
-void camera_shutter_open();
-
-void camera_flash_exp_close();
-void camera_flash_exp_half();
-void camera_flash_exp_open();
-
-void camera_mirror_release();
-void camera_mirror_arm();
-void camera_eject_darkslide(); // (= release mirror)
+void camera_start_y_delay();
+void camera_start_exposure();
+void camera_stop_exposure();
 
 // specific exposure modes. Not sure about them.
+void camera_expose();
 void camera_expose_auto();
 void camera_expose_manual();
 void camera_expose_mode_B();
 void camera_expose_mode_T();
-
-
-
 
 #endif

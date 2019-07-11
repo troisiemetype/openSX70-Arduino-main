@@ -80,6 +80,9 @@ void setup(){
 
 	// hardware peripherals (light meter, others)
 
+	meter_init();
+	meter_set_sensitivity(0);
+
 	/* dongle initialisation.
 	 *	switch 1 & 2 read
 	 *	wheel reed
@@ -99,21 +102,7 @@ void loop(){
 
 	// read dongle
 
-	/* manage exposures
-	 *	bare picture :
-	 *		close shutter
-	 *		release mirror
-	 *		delay (for vibrations)
-	 *		open shutter
-	 *		integrate light
-	 *		close shutter
-	 *		eject picture / rearm mirror
-	 *	One need to integrate different modes :
-	 *		manual pose
-	 *		pose B
-	 *		pose T
-	 *		multiexposure
-	 */
+	camera_state_main();
 
 	// store picture parameters
 

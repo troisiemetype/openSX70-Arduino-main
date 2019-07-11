@@ -33,23 +33,23 @@
  * Complete license terms are available at : https://creativecommons.org/licenses/by-nc/4.0/legalcode
  */
 
-#ifndef OPENSX70_SETTINGS_H
-#define OPENSX70_SETTINGS_H
+#ifndef OPENSX70_SYSTEM_H
+#define OPENSX70_SYSTEM_H
 
-#define DEFAULT_ISO       100
+void system_shutter_close();
+void system_shutter_half();
+void system_shutter_open();
 
-#define METER_CHIP        TSL237T
+void system_flash_exp_close();
+void system_flash_exp_half();
+void system_flash_exp_open();
 
-#define Y_DELAY           40                // debounce delay after mirror release
+// Not sure about these three...
+void system_mirror_release();
+void system_mirror_arm();
+void system_eject_darkslide(); // (= release mirror)
 
-// light sensor used.
-// The light sensor has to be defined here, only one can be defined at once for a system.
-// A light sensor defined here has to provide a header and c file,
-// with generic (program-called) and hardware-specific functions,
-// As well as a preprocessor include directive in meter.h
-#define TSL237T
-//#define TSL235R
-//#define TCS3200
-//#define TSL2591
+void system_motor_run();
+void system_motor_stop();
 
 #endif

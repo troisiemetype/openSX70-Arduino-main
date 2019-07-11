@@ -35,8 +35,40 @@
 
 #include "open_sx70.h"
 
-static uint16_t A100 = 1000;
-static uint16_t A600 = 450;
+volatile bool integrationFinished = 0;
+
+uint16_t outputCompare = A100;
+
+void meter_init(){
+	tsl237_init();
+}
+
+void meter_set_sensitivity(const bool& s){
+	if(s){
+		outputCompare = A600;
+	} else {
+		outputCompare = A100;
+	}
+
+}
+
+void meter_compute(){
+
+}
+
+void meter_integrate(){
+	tsl237_start_integration();
+}
+
+bool meter_update(){
+	if(integrationFinished){
+		integrationFinished = 0;
+		return 1;
+	}
+	return 0;
+}
+
+
 
 // initialise Timer 1 for light sensor integration.
 void tsl237_init(){
@@ -53,10 +85,7 @@ void tsl237_init(){
 }
 
 // Start a new measure for pose.
-void tsl237_start_integration(const bool& sensivity){
-	uint16_t outputCompare = A100;
-	if(sensivity) outputCompare = A600;
-
+void tsl237_start_integration(){
 	cli();
 	// Clear interrupts flags we are using
 //	TIFR1 = (1 << OCF1A) | (1 << TOV1);
@@ -75,5 +104,6 @@ void tsl237_start_integration(const bool& sensivity){
 // ISR for complete conversion. Should set a flag read by the main loop.
 ISR(TIMER1_COMPA_vect){
 	TIMSK1 = 0;
+	integrationFinished = 1;
 	// function / flag.
 }

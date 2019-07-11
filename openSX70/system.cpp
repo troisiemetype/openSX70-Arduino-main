@@ -35,3 +35,50 @@
 
 #include "open_sx70.h"
 
+void system_shutter_close(){
+	// power sol 1
+}
+
+void system_shutter_half(){
+	// reduce power (pwm) to sol 1
+}
+
+void system_shutter_open(){
+	// unpower sol 1
+}
+
+void system_flash_exp_close(){
+	// power sol 2
+}
+
+void system_flash_exp_half(){
+	// reduce power (pwm) to sol 2
+}
+
+void system_flash_exp_open(){
+	// unpower sol 2
+}
+
+// Work to do on motor functions, here !
+void system_mirror_release(){
+	// power motor
+}
+
+void system_mirror_arm(){
+	// power motor
+}
+
+void system_eject_darkslide(){
+	// power motor
+
+}
+
+void system_motor_run(){
+	// power motor
+
+}
+
+void system_motor_stop(){
+	// unpower motor
+
+}

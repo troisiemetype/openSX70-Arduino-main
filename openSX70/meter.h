@@ -37,10 +37,40 @@
 #define OPENSX70_METER_H
 
 // Meter deals with integrated lightmeter.
-// It should provide generic functions to be called by the main program,
-// which functions call whatever is needed for a specific light measurement chip.
+// These functions are to be defined for each specific meter chip that is used on the board.
+// They will implement whatever is needed for this chip to provide the needed data.
+// note : as they are hardware-specific implemented, there is no meter.cpp file.
 
-void meter_init();
-void meter_compute();
+// As we are in the developing process, their argument may evolve, as well as their return type.
+
+// Self-explanatory : do whatever is needed for the chip to run on startup :
+// Pin enable, one-wire / I2C / SPI interface initialisation
+extern void meter_init();
+
+// give the sensitivity to the meter
+extern void meter_set_sensitivity(bool const& s);
+
+// compute the time needed for current ligth condition
+// so it can be display as an indication in the viewfinder
+extern void meter_compute();
+
+// start an integration cycle for auto exposure
+extern void meter_integrate();
+
+// get the update from the sensor. When enough light has reached the film, returns true.
+extern bool meter_update();
+
+// preprocessor conditionnal inlusion for specific chip header file.
+#if defined (TSL237T)
+#	include "TSL237T.h"
+#elif defined (TSL235R)
+#	include "TSL235R.h"
+#elif defined (TCS3200)
+#	include "TCS3200.h"
+#elif defined (TSL2591)
+#	include "TSL2591.h"
+#else
+#	warning	"no meter included"
+#endif
 
 #endif
