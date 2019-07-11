@@ -33,28 +33,55 @@
  * Complete license terms are available at : https://creativecommons.org/licenses/by-nc/4.0/legalcode
  */
 
-#ifndef OPENSX70_SETTINGS_H
-#define OPENSX70_SETTINGS_H
+#include "open_sx70.h"
 
-#define DEFAULT_ISO       100
+DS2408 ds(ONE_WIRE_BUS_PORT)
+Device dongleDevice;
+uint8_t deviceCount = 0;
 
-#define METER_CHIP        TSL237T
+void dongle_init(){
 
-#define Y_DELAY           40                // debounce delay after mirror release
+}
 
-// light sensor used.
-// The light sensor has to be defined here, only one can be defined at once for a system.
-// A light sensor defined here has to provide a header and c file,
-// with generic (program-called) and hardware-specific functions,
-// As well as a preprocessor include directive in meter.h
-#define TSL237T
-//#define TSL235R
-//#define TCS3200
-//#define TSL2591
+bool dongle_get_sw1(){
 
-// Dongle used
-// Same as for light sensor : define the name of the dongle you need
-// so the right files are included
-#define ORIGAMI
+}
 
-#endif
+bool dongle_get_sw2(){
+
+}
+
+bool dongle_get_wheel(){
+
+}
+
+void dongle_set_flash(const bool& state){
+
+}
+
+void dongle_set_led(const bool& state){
+
+}
+
+void dongle_init_DS2408(){
+	ds.reset();
+	// This is 0x96 in the original code ; I suppose it should be 0x69 / ONEWIRE_OVERRIDE_MATCH_CMD
+	// As 0x96 is not known by the datasheet
+	ds.write(ONEWIRE_OVERRIDE_MATCH_CMD);
+	for (uint8_t i = 0; i < 8; ++i){
+		// I can't find where Device dongleDevice is initialised in the code.
+		// So I don't know whet it handles. I believe it should contain unique device address.
+		ds.write(dongleDevice[i]);
+	}
+	ds.write(ONEWIRE_OVERRIDE_SKIP_CMD);
+	ds.reset();
+}
+
+uint8_t dongle_read_DS2408_IO(uint8_t slot){
+
+}
+
+void dongle_write_DS2408_IO(uint8_t port, bool state{
+
+}
+

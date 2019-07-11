@@ -36,8 +36,17 @@
 #ifndef OPENSX70_OPENSX70_H
 #define OPENSX70_OPENSX70_H
 
+// Don't change the order of the includes, as there are cross dependencies !
+
+// All headers are included with this file, and each .cpp should include this one !
+// There are exceptions, though : specific libraries for specific hardware on the camera
+// or for the dongle are included in their specific files.
+
 // includes for Arduino environnement
 #include <Arduino.h>
+
+// includes for external libraries
+// #include "DigitalPin.h"
 
 // Includes for openSX70
 #include "settings.h"
@@ -45,5 +54,5 @@
 #include "eeprom.h"
 #include "meter.h"
 #include "camera.h"
-#include "DigitalPin.h"
+
 #endif

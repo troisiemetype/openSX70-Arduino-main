@@ -33,28 +33,19 @@
  * Complete license terms are available at : https://creativecommons.org/licenses/by-nc/4.0/legalcode
  */
 
-#ifndef OPENSX70_SETTINGS_H
-#define OPENSX70_SETTINGS_H
+#ifndef OPENSX70_DONGLE_H
+#define OPENSX70_DONGLE_H
 
-#define DEFAULT_ISO       100
+#if defined (ORIGAMI)
+#	include "origami.h"
+#elif
+#	warning "no dongle included"
 
-#define METER_CHIP        TSL237T
-
-#define Y_DELAY           40                // debounce delay after mirror release
-
-// light sensor used.
-// The light sensor has to be defined here, only one can be defined at once for a system.
-// A light sensor defined here has to provide a header and c file,
-// with generic (program-called) and hardware-specific functions,
-// As well as a preprocessor include directive in meter.h
-#define TSL237T
-//#define TSL235R
-//#define TCS3200
-//#define TSL2591
-
-// Dongle used
-// Same as for light sensor : define the name of the dongle you need
-// so the right files are included
-#define ORIGAMI
+extern void dongle_init();
+extern bool dongle_get_sw1();
+extern bool dongle_get_sw2();
+extern bool dongle_get_wheel();
+extern void dongle_set_flash(const bool& state);
+extern void dongle_set_led(const bool& state);
 
 #endif

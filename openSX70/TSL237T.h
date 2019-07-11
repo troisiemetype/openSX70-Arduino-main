@@ -49,8 +49,8 @@
 #define A100 1000
 #define A600 450
 */
-const uint16_t A100 = 1000;
-const uint16_t A600 = 450;
+#define A100 1000
+#define A600 450
 
 /* These functions are called by the main loop.
  * They provide uniform handling for whatever light sensor is used on a specific board.

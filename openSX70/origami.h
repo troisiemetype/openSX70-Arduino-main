@@ -33,28 +33,26 @@
  * Complete license terms are available at : https://creativecommons.org/licenses/by-nc/4.0/legalcode
  */
 
-#ifndef OPENSX70_SETTINGS_H
-#define OPENSX70_SETTINGS_H
+#ifndef OPENSX70_DONGLE_H
+#	error "inlude meter.h instead of this file"
+#endif
 
-#define DEFAULT_ISO       100
+#ifndef OPENSX70_DONGLE_MODEL_H
+#	define OPENSX70_METER_DONGLE_MODEL_H
+#else
+#	error "several dongles set. Only one should be set. See settings.h"
+#endif
 
-#define METER_CHIP        TSL237T
+#ifndef OPENSX70_DONGLE_ORIGAMI_H
+#define OPENSX70_DONGLE_ORIGAMI_H
 
-#define Y_DELAY           40                // debounce delay after mirror release
+#include "DS2408.h"
 
-// light sensor used.
-// The light sensor has to be defined here, only one can be defined at once for a system.
-// A light sensor defined here has to provide a header and c file,
-// with generic (program-called) and hardware-specific functions,
-// As well as a preprocessor include directive in meter.h
-#define TSL237T
-//#define TSL235R
-//#define TCS3200
-//#define TSL2591
+// better to put this define somewhere else, like in the pin definition file, or system
+#define ONE_WIRE_BUS_PORT A4
 
-// Dongle used
-// Same as for light sensor : define the name of the dongle you need
-// so the right files are included
-#define ORIGAMI
+void dongle_init_DS2408();
+uint8_t dongle_read_DS2408_IO(uint8_t slot);
+void dongle_write_DS2408_IO(uint8_t port, bool state)
 
 #endif
