@@ -36,18 +36,16 @@
 #ifndef OPENSX70_CAMERA_H
 #define OPENSX70_CAMERA_H
 
+
 enum camera_state_t{
 	STATE_IDLE = 0,
-	STATE_CLOSE_SHUTTER,
-	STATE_RELEASE_MIRROR,
-	STATE_WAIT_S3,
+	STATE_SELF_TIMER,
+	STATE_SHUTTER_CLOSE,
+	STATE_MIRROR_UP,
 	STATE_Y_DELAY,
-	STATE_START_OBTURATION,
-	STATE_INTEGRATE,
-	STATE_STOP_OBTURATION,
-	STATE_EJECT,
-	STATE_WAIT_S5,
-	STATE_HOLD,
+	STATE_EXPOSE,
+	STATE_EXPOSED,
+	STATE_EJECTION,
 };
 
 enum camera_mode_t{
@@ -57,20 +55,37 @@ enum camera_mode_t{
 	MODE_T,
 };
 
-void camera_pose_auto();
-void camera_pose_manual();
+// state functions. These should return a state and take a parameter
+void camera_state();
+void camera_state_idle();
+void camera_state_self_timer();
+void camera_state_shutter_close();
+void camera_state_mirror_up();
+void camera_state_y_delay();
+void camera_state_expose();
+void camera_state_exposed();
+void camera_state_ejection();
 
-void camera_shutter_open();
-void camera_shutter_maintain();
+// transition functions
+void camera_start_self_timer();
+
 void camera_shutter_close();
+void camera_shutter_half();
+void camera_shutter_open();
 
-void camera_flash_exp_open();
-void camera_flash_exp_maintain();
 void camera_flash_exp_close();
+void camera_flash_exp_half();
+void camera_flash_exp_open();
 
-void camera_release_mirror();
-void camera_eject();
-void camera_eject_darkslide(); // (= release mirror + eject darkslide)
+void camera_mirror_release();
+void camera_mirror_arm();
+void camera_eject_darkslide(); // (= release mirror)
+
+// specific exposure modes. Not sure about them.
+void camera_expose_auto();
+void camera_expose_manual();
+void camera_expose_mode_B();
+void camera_expose_mode_T();
 
 
 
