@@ -54,5 +54,6 @@
 #include "eeprom.h"
 #include "meter.h"
 #include "camera.h"
+#include "dongle.h"
 
 #endif

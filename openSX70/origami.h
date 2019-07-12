@@ -34,7 +34,7 @@
  */
 
 #ifndef OPENSX70_DONGLE_H
-#	error "inlude meter.h instead of this file"
+#	error "inlude dongle.h instead of this file"
 #endif
 
 #ifndef OPENSX70_DONGLE_MODEL_H
@@ -46,13 +46,14 @@
 #ifndef OPENSX70_DONGLE_ORIGAMI_H
 #define OPENSX70_DONGLE_ORIGAMI_H
 
-#include "DS2408.h"
+#include <DS2408.h>
 
 // better to put this define somewhere else, like in the pin definition file, or system
 #define ONE_WIRE_BUS_PORT A4
 
+
 void dongle_init_DS2408();
 uint8_t dongle_read_DS2408_IO(uint8_t slot);
-void dongle_write_DS2408_IO(uint8_t port, bool state)
+void dongle_write_DS2408_IO(uint8_t port, bool state);
 
 #endif

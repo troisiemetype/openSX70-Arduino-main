@@ -36,16 +36,18 @@
 #ifndef OPENSX70_DONGLE_H
 #define OPENSX70_DONGLE_H
 
+extern void dongle_init();
+extern bool dongle_check_presence();
+extern bool dongle_get_sw1();
+extern bool dongle_get_sw2();
+extern uint8_t dongle_get_selector();
+extern void dongle_set_flash(const bool& state);
+extern void dongle_set_led(const bool& state);
+
 #if defined (ORIGAMI)
 #	include "origami.h"
 #elif
 #	warning "no dongle included"
-
-extern void dongle_init();
-extern bool dongle_get_sw1();
-extern bool dongle_get_sw2();
-extern bool dongle_get_wheel();
-extern void dongle_set_flash(const bool& state);
-extern void dongle_set_led(const bool& state);
+#endif
 
 #endif

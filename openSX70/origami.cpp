@@ -35,32 +35,51 @@
 
 #include "open_sx70.h"
 
-DS2408 ds(ONE_WIRE_BUS_PORT)
+DS2408 ds(ONE_WIRE_BUS_PORT);
 Device dongleDevice;
 uint8_t deviceCount = 0;
 
-void dongle_init(){
+const uint8_t SLOT_SELECTOR = 0;
+const uint8_t SLOT_SW1 = 1;
+const uint8_t SLOT_SW2 = 2;
 
+const uint8_t MASK_SELECTOR = 0x0F;
+const uint8_t MASK_SW1 = (1 << 5);
+const uint8_t MASK_SW2 = (1 << 4);
+
+const uint8_t PORT_LED =  6;
+const uint8_t PORT_FLASH = 7;
+
+void dongle_init(){
+	dongle_init_DS2408();
+}
+
+bool dongle_check_presence(){
+	if  (((deviceCount == 0)) && (digitalRead(ONE_WIRE_BUS_PORT) == HIGH)){
+		return 1;
+	}
+
+	return 0;
 }
 
 bool dongle_get_sw1(){
-
+	return (bool)dongle_read_DS2408_IO(SLOT_SW1);
 }
 
 bool dongle_get_sw2(){
-
+	return (bool)dongle_read_DS2408_IO(SLOT_SW2);
 }
 
-bool dongle_get_wheel(){
-
+uint8_t dongle_get_selector(){
+	return dongle_read_DS2408_IO(SLOT_SELECTOR);
 }
 
 void dongle_set_flash(const bool& state){
-
+	dongle_write_DS2408_IO(PORT_FLASH, state);
 }
 
 void dongle_set_led(const bool& state){
-
+	dongle_write_DS2408_IO(PORT_LED, state);
 }
 
 void dongle_init_DS2408(){
@@ -78,10 +97,25 @@ void dongle_init_DS2408(){
 }
 
 uint8_t dongle_read_DS2408_IO(uint8_t slot){
+	uint8_t readDevice = ds.get_state(dongleDevice);
 
+	switch(slot){
+		case SLOT_SELECTOR:
+			return (readDevice & MASK_SELECTOR);
+		case SLOT_SW1:
+			return (readDevice & MASK_SW1);
+		case SLOT_SW2:
+			return (readDevice & MASK_SW2);
+		default:
+			return 0;
+	}
 }
 
-void dongle_write_DS2408_IO(uint8_t port, bool state{
+void dongle_write_DS2408_IO(uint8_t port, bool state){
+	uint8_t outPIO = 0;
+	uint8_t readDevice = ds.get_state(dongleDevice);
+	if(state) outPIO |= (1 << port);
+	ds.set_state(dongleDevice, ~outPIO);
 
 }
 
