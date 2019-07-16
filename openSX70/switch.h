@@ -36,17 +36,69 @@
 #ifndef OPENSX70_SWITCH_H
 #define OPENSX70_SWITCH_H
 
+/*
+ * The sw class handles debounce, long and double clic detection for us.
+ * It has two init() and two update() methods :
+ *
+ * When using the class with a microcontrolleur pin, the class is init with the pin number.
+ * then update has to be called when needed, without argument, and the methods reads the pin.
+ *
+ * The class can also be used to debounce an "external" pin, e.g. on a port exander (dongle, etc.)
+ * In that case we don't pass a pin when initialising,
+ * but we have to pass the state when updating.
+ */ 
+class sw{
+public:
+	void init(bool active = HIGH);
+	void init(uint8_t pin, bool active = HIGH);
+
+	void set_debounce_delay(uint16_t delay);
+	void set_long_delay(uint16_t delay);
+	void set_double_delay(uint16_t delay);
+	void set_active_state(bool active);
+
+	bool update();
+	bool update(bool state);
+
+	bool state();
+	bool is_press();
+	bool is_release();
+	bool just_released();
+	bool long_state();
+	bool double_state();
+
+private:
+	
+	uint8_t _pin;
+
+	bool _now;
+	bool _prev;
+	bool _nowState;
+	bool _prevState;
+	bool _activeState;
+
+	bool _pressState;
+	bool _longState;
+	bool _doubleState;
+
+	uint32_t _time;
+	uint32_t _timeDouble;
+
+	uint16_t _debounceDelay;
+	uint16_t _longDelay;
+	uint16_t _doubleDelay;
+
+
+};
+
 void sw_init();
 
-void sw_set_debounce_delay();
-void sw_set_long_delay();
-void sw_set_double_delay();
-
-bool sw_update();
-bool sw_state();
-bool sw_long_state();
-bool sw_double_state();
-
+extern sw sw_S1;
+extern sw sw_S2;
+extern sw sw_S3;
+extern sw sw_S5;
+extern sw sw_S8;
+extern sw sw_S9;
 
 
 #endif

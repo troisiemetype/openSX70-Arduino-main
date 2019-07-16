@@ -33,20 +33,33 @@
  * Complete license terms are available at : https://creativecommons.org/licenses/by-nc/4.0/legalcode
  */
 
-#ifndef OPENSX70_SYSTEM_H
-#define OPENSX70_SYSTEM_H
+#include "open_sx70.h"
 
-void system_shutter_close();
-void system_shutter_half();
-void system_shutter_open();
+void io_init(){
+	// Output definition
+	pinMode(PIN_SOL1, OUTPUT);
+	pinMode(PIN_SOL2, OUTPUT);
+	pinMode(PIN_FFA, OUTPUT);
+	pinMode(PIN_MOTOR, OUTPUT);
+	pinMode(PIN_LED1, OUTPUT);
+	pinMode(PIN_LED2, OUTPUT);
 
-void system_flash_exp_close();
-void system_flash_exp_half();
-void system_flash_exp_open();
+	// output default state set.
+	digitalWrite(PIN_SOL1, LOW);
+	digitalWrite(PIN_SOL2, LOW);
+	digitalWrite(PIN_FFA, LOW);
+	digitalWrite(PIN_MOTOR, LOW);
+	digitalWrite(PIN_LED1, LOW);
+	digitalWrite(PIN_LED2, LOW);
 
-void system_motor_run();
-void system_motor_stop();
+	// input definition
+	pinMode(PIN_S1, INPUT_PULLUP);
+	pinMode(PIN_S2, INPUT_PULLUP);
+	pinMode(PIN_S3, INPUT_PULLUP);
+	pinMode(PIN_S5, INPUT_PULLUP);
+	pinMode(PIN_S8, INPUT);
+	pinMode(PIN_S9, INPUT);
 
-void system_eject_darkslide();
+	// switch definition (switch provide debounce, long and double clic detection)
 
-#endif
+}

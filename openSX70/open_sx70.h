@@ -50,6 +50,8 @@
 
 // Includes for openSX70
 #include "settings.h"
+#include "io.h"
+#include "switch.h"
 #include "system.h"
 #include "eeprom.h"
 #include "meter.h"

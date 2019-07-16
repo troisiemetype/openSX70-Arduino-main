@@ -37,6 +37,51 @@
 #include "open_sx70.h"
 
 /*
+ * Sum-up : this file, and open_SX70.h, are the entry point for global openSX70 software.
+ * 
+ * Every part of the project has been dispatched to a dedicated file.cpp + file.h.
+ * They are all called from open_sx70.h
+ *
+ *
+ * The core functions (software-dependent) and implementations (hardwareèdependent)
+ * has been dissociated as much as possible in dedicated files.
+ *
+ *
+ * Typical examples is dongle, with a generic file to implement generic functions,
+ * and a specific file for a specific dongle, implementing entry points whith the generic functions
+ * and mapping them to whatever communication protocol is needed.
+ *
+ * Another example is light sensor, where there is also a generic header file with generic functions,
+ * and a specific file for a given chip and dedicated code.
+ *
+ * Same structure as been used for inputs / outputs, so :
+ *		on one side I/O are defined.
+ *		on one other side functions are provided to be called from the main loop for motor, etc.
+ *		And as needed, functions / classes are provided to help debouncing inputs.
+ */
+
+/*
+ * Here is a list of different files of the project, wit h a brief of what they are intended for :
+ *
+ *	openSX70.ino / open_sx70.h 			Entry point for program. Startup setting, main loop. Global librairies and depencies includes.
+ *	settings.h 							Global settings. Y delay, hardware specific options.
+ *	camera.cpp / .h 					Main state machine, functions for stable states and transition handling.
+ *	dongle.h *							Entry point for dongle. Standard interface functions.
+ *	eeprom.cpp / .h 					Self-explanatory : eeprom handling, with interface functions.
+ *	hardawre.cpp / .h 					Functions for hardware handling, like motor or solenoids.
+ *	io.cpp / .h 						Pin definition.
+ *	meter.h ** 							Meter entry point. Standard interface functions.
+ *	switch.cpp / .h 					Class for switch handling, with methods for debouncing, long and double clic, etc.
+ *	system.cpp / .h 					For now duplicates hardware. have to choose the best name for it ! :)
+ *	
+ *		*	dongle handles specific file calling for hardware, according to what is defined in settings.
+ *			and implements needed functions.
+ *		**	meter does the same for the meter chip.
+ *
+ *			These two case are the only one that include libraries on their own.
+ */
+
+/*
  * Setup function
  * All we have to do here is set the basic state of the systme, that is : 
  *	- Initialise all actuators (motor, solenoids)
@@ -51,6 +96,11 @@
 
 void setup(){
 
+	// Init all the outputs and inputs. setting them to idle (default) values.
+	io_init();
+
+	// Init all the switches.
+	sw_init();
 
 	/* OUTPUT pins initialisation.
 	 *		MOTOR
@@ -89,6 +139,9 @@ void setup(){
 	 *	led
 	 *	dongle flash
 	 */
+
+	 dongle_init();
+
 
 	// blink leds for sensivity !
    	

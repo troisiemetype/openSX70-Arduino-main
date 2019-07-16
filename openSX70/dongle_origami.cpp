@@ -50,8 +50,12 @@ const uint8_t MASK_SW2 = (1 << 4);
 const uint8_t PORT_LED =  6;
 const uint8_t PORT_FLASH = 7;
 
-void dongle_init(){
+bool dongle_init(){
+	// This gets the address on the device.
+	// The function called populates the argument passed by reference
+	if(!ds.findsingle(&dongleDevice)) return 0;
 	dongle_init_DS2408();
+	return 1;
 }
 
 bool dongle_check_presence(){
@@ -88,8 +92,6 @@ void dongle_init_DS2408(){
 	// As 0x96 is not known by the datasheet
 	ds.write(ONEWIRE_OVERRIDE_MATCH_CMD);
 	for (uint8_t i = 0; i < 8; ++i){
-		// I can't find where Device dongleDevice is initialised in the code.
-		// So I don't know whet it handles. I believe it should contain unique device address.
 		ds.write(dongleDevice[i]);
 	}
 	ds.write(ONEWIRE_OVERRIDE_SKIP_CMD);

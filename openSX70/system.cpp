@@ -37,6 +37,7 @@
 
 void system_shutter_close(){
 	// power sol 1
+	digitalWrite(PIN_SOL1, HIGH);
 }
 
 void system_shutter_half(){
@@ -45,10 +46,12 @@ void system_shutter_half(){
 
 void system_shutter_open(){
 	// unpower sol 1
+	digitalWrite(PIN_SOL1, LOW);
 }
 
 void system_flash_exp_close(){
 	// power sol 2
+	digitalWrite(PIN_SOL2, HIGH);
 }
 
 void system_flash_exp_half(){
@@ -57,28 +60,20 @@ void system_flash_exp_half(){
 
 void system_flash_exp_open(){
 	// unpower sol 2
-}
-
-// Work to do on motor functions, here !
-void system_mirror_release(){
-	// power motor
-}
-
-void system_mirror_arm(){
-	// power motor
-}
-
-void system_eject_darkslide(){
-	// power motor
+	digitalWrite(PIN_SOL2, LOW);
 
 }
 
 void system_motor_run(){
 	// power motor
-
+	digitalWrite(PIN_MOTOR, HIGH);
 }
 
 void system_motor_stop(){
 	// unpower motor
+	digitalWrite(PIN_MOTOR, LOW);
+}
 
+void system_eject_darslide(){
+	
 }
