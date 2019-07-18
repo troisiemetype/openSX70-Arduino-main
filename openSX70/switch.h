@@ -49,6 +49,7 @@
  */ 
 class sw{
 public:
+
 	void init(bool active = HIGH);
 	void init(uint8_t pin, bool active = HIGH);
 
@@ -60,12 +61,12 @@ public:
 	bool update();
 	bool update(bool state);
 
-	bool state();
-	bool is_press();
-	bool is_release();
-	bool just_released();
-	bool long_state();
-	bool double_state();
+	bool is_pressed();
+	bool is_released();
+	bool is_just_pressed();
+	bool is_just_released();
+	bool is_long_pressed();
+	bool is_double_clicked();
 
 private:
 	
@@ -75,11 +76,12 @@ private:
 	bool _prev;
 	bool _nowState;
 	bool _prevState;
-	bool _activeState;
+	bool _invert;
 
-	bool _pressState;
 	bool _longState;
 	bool _doubleState;
+	bool _isJustPressed;
+	bool _isJustreleased;
 
 	uint32_t _time;
 	uint32_t _timeDouble;

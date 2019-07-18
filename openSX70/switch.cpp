@@ -69,17 +69,33 @@ void sw_init(){
 // class definition
 
 void sw::init(bool active){
-	_activeState = !active;
+	_invert = !active;
 
-	_now = false;
-	_prev = false;
-	_nowState = false;
-	_prevState = false;
+	// initial states are not the same when the pin is active low or active high
+	// 
+	if(!_invert){
+		_now = true;
+		_prev = true;
+		_nowState = true;
+		_prevState = true;
+
+	} else {
+		_now = false;
+		_prev = false;
+		_nowState = false;
+		_prevState = false;
+
+	}
 
 	_pressState = false;
 	_longState = false;
 	_doubleState= false;
 
+	// Default value for delays
+	// Could be in an intialisation list for more convenience.
+	_debounceDelay = 5;
+	_longDelay = 500;
+	_doubleDelay = 200;
 
 }
 
@@ -101,31 +117,116 @@ void sw::set_double_delay(uint16_t delay){
 }
 
 void sw::set_active_state(bool active){
-	_activeState = !active;
+	_invert = !active;
 }
 
 bool sw::update(){
 	update(digitalRead(_pin));
 }
-
+// Note about the update method : we test for debounce regardless of the state.
+// Several reasons for that : 
+//		- The code is simpler if we don't have to implement different things for up or down transition.
+//		- We can use long "unclic" if needed.
+//		- Active low and active high are handle the same way, the difference is made when we call the state methods.
 bool sw::update(bool state){
 
+	// Update instant reading
+	// These two are "buffered" states, used to check debounce, long and double clic.
+	// registered states are stored in _nowState and _prevState.
+	_prev = _now;
+	_now = state;
+
+	// We will call millis just once, and store its current value.
+	uint32_t instantTime = millis();
+
+	// If there is a change since last update, we set timer to 0, and exit, as there is nothing else to check.
+	if(_prev != _now){
+		_time = instantTime;
+		return false;
+	}
+
+	// Here we check if the debounce delay has elapsed.
+	if((_nowState != _now) && ((instantTime - _time) > _debounceDelay)){
+		// update registered state from instant state.
+		_prevState = _nowState;
+		_nowState = _now;
+		// Set the flags for long clic, just pressed and just released to 0.
+		// note : just pressed and just released states are defined when their methods are called.
+		// 		Their state then changes, and the methods no longer return true. See above
+		_longState = false;
+		_isJustPressed = false;
+		_isJustReleased = false;
+
+		// Now we have a clic, let's test if it could be a double clic.
+		// If we take care of the state of the button, i.e. we don't want to test for "double release!"
+		// So we use the is_released method, which handles the active state of the button (active low or active high)
+		// If the button has been released just now, it could be a double clic if the previous release happened for a lesser time than double-clic delay.
+		if(is_released()){
+			// if it has been released, we check the time elapsed.
+			if((instantTime - _timeDouble) < _doubleDelay){
+				_doubleState = true;
+			} else {
+				_doubleState = false;
+			}
+			// As the button has been released, we reset the double clic counter.
+			_timeDouble = instantTime;
+		}
+
+		return true;
+	}
+
+	// here we check for a long press
+	if(!_longState && ((instantTime - _Time) > _longDelay)){
+		_longState = true;
+		return true;
+	}
+
+	return false;
 }
 
-bool sw::state(){
-
-}
-
-bool sw::is_press(){
-	return _nowState ^ _activeState;
+bool sw::is_pressed(){
+	return _nowState ^ _invert;
 }
 
 bool sw::is_release(){
-	return (!_nowState) ^ _activeState;
+	return (!_nowState) ^ _invert;
 }
 
-bool sw::just_released(){
+// note about _isJustePressed and _isJustReleased member vars :
+// They are flags that are set when the method is called and returns true.
+// So the method can return only once for state change.
+bool sw::is_just_pressed(){
+	if(is_pressed() && !_isJustPressed){
+		_isJustPressed = true;
+		return true;
+	} else {
+		return false;
+	}
+}
+
+// Ditto.
+bool sw::is_just_released(){
+	if(is_released() && !_isJustReleased){
+		_isJustReleased = true;
+		return true;
+	} else {
+		return false;
+	}
+}
+
+bool sw::is_long_pressed(){
+	return (_nowState ^ _invert) && _longState;
 
 }
 
+bool sw::is_double_clicked(){
+	if(!_doubleState) return false;
+
+	if(is_just_released()){
+		_doubleState = false;
+		return true;
+	} else {
+		return false;
+	}
+}
 
