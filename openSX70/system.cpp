@@ -73,7 +73,3 @@ void system_motor_stop(){
 	// unpower motor
 	digitalWrite(PIN_MOTOR, LOW);
 }
-
-void system_eject_darslide(){
-	
-}

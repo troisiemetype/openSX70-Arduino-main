@@ -45,10 +45,7 @@
 
 #ifndef OPENSX70_TSL237_H
 #define OPENSX70_TSL237T_H
-/*
-#define A100 1000
-#define A600 450
-*/
+
 #define A100 1000
 #define A600 450
 
@@ -58,10 +55,10 @@
  * So it is transparent for the program.
  */
 
-// for memory, generiv functions :
+// for memory, generic functions :
 /*
 void meter_init();
-void meter_set_sensivity();
+void meter_set_iso();
 void meter_compute();
 void meter_integrate();
 bool meter_update();

@@ -37,8 +37,8 @@
 #	error "inlude dongle.h instead of this file"
 #endif
 
-#ifndef OPENSX70_DONGLE_MODEL_H
-#	define OPENSX70_METER_DONGLE_MODEL_H
+#ifndef OPENSX70_DONGLE_MODEL
+#	define OPENSX70_METER_DONGLE_MODEL
 #else
 #	error "several dongles set. Only one should be set. See settings.h"
 #endif

@@ -44,12 +44,15 @@
 
 // includes for Arduino environnement
 #include <Arduino.h>
+#include <EEPROM.h>
 
 // includes for external libraries
 // #include "DigitalPin.h"
+#include "Timer.h"
 
 // Includes for openSX70
 #include "settings.h"
+//#include "global.h"
 #include "io.h"
 #include "switch.h"
 #include "system.h"

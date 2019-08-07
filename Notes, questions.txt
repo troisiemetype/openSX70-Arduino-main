@@ -14,3 +14,6 @@ DongleFlashF8 is for flash connected to the dongle, without auto-exposure. Could
 
 *
 See what kind of flag system can be made so ISR in lightmeter-specific chip can be read from the main loop
+
+*
+About flash, and dongle flash : could it be possible to reuse FFA for dongle flash triggering ? It could be made by simply connecting a mosfet to the first available pin, and add a optoisolator ?

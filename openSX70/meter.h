@@ -48,7 +48,7 @@
 extern void meter_init();
 
 // give the sensitivity to the meter
-extern void meter_set_sensitivity(bool const& s);
+extern void meter_set_iso(uint16_t const& iso);
 
 // compute the time needed for current ligth condition
 // so it can be display as an indication in the viewfinder

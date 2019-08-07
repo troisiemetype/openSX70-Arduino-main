@@ -93,6 +93,8 @@
  *
  */
 
+ uint16_t iso = DEFAULT_ISO;
+
 
 void setup(){
 
@@ -127,11 +129,15 @@ void setup(){
 	 *	picture struct
 	 */
 
+	eeprom_init();
+
+	iso = eeprom_get_iso();
+
 
 	// hardware peripherals (light meter, others)
 
 	meter_init();
-	meter_set_sensitivity(0);
+	meter_set_iso(iso);
 
 	/* dongle initialisation.
 	 *	switch 1 & 2 read
@@ -140,20 +146,61 @@ void setup(){
 	 *	dongle flash
 	 */
 
-	 dongle_init();
+	// I think dongle should have a state machine too, at least for hot-plugging management.
+	// And be checked in the main loop.
+	dongle_init();
 
 
 	// blink leds for sensivity !
+
+	// test for S8 state and command ejection if needed.
+	if(!digitalRead(PIN_S8)) camera_eject_darkslide();
    	
 }
 
 void loop(){
 
-	/* detect switches
-	 *	red button as a double click for selftimer
-	 */
-
 	// read dongle
+	// Only if there is a dongle attached
+
+	if(!dongle_check_presence()){
+		bool sw1 = 0;
+		bool sw2 = 0;
+		uint8_t selector = 0;
+
+		sw1 = dongle_get_sw1();
+		sw2 = dongle_get_sw2();
+		selector = dongle_get_selector();
+
+		if(selector < 12){
+			camera_set_manual(selector);
+		} else if(selector == 12){
+			camera_set_auto(ISO_600);
+		} else if(selector == 13){
+			camera_set_auto(ISO_SX70);
+		} else if(selector == 14){
+			camera_set_pose_T();
+		} else if(selector == 15){
+			camera_set_pose_B();
+		} else {
+			camera_set_auto(DEFAULT_ISO);
+		}
+
+		camera_set_multi_exposure(sw1);
+
+		// add helper function here for switch 2
+
+		// We can set the default iso by setting sw1 and sw2 and the iso we want.
+		if(sw1 && sw2){
+			if(selector == 12){
+				iso = ISO_600;
+			} else if(selector == 13){
+				iso = ISO_SX70;
+			}
+			meter_set_iso(iso);
+			eeprom_set_iso(iso);
+		}
+	}
 
 	camera_state_main();
 

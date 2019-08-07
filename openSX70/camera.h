@@ -33,9 +33,12 @@
  * Complete license terms are available at : https://creativecommons.org/licenses/by-nc/4.0/legalcode
  */
 
+/*
+ * This file handles the logic of the different states involved in the process of making a picture.
+ */
+
 #ifndef OPENSX70_CAMERA_H
 #define OPENSX70_CAMERA_H
-
 
 enum camera_state_t{
 	STATE_IDLE = 0,
@@ -46,6 +49,8 @@ enum camera_state_t{
 	STATE_EXPOSE,
 	STATE_EXPOSED,
 	STATE_EJECTION,
+	STATE_DARKSLIDE_1,
+	STATE_DARKSLIDE_2,
 };
 
 enum camera_mode_t{
@@ -65,6 +70,7 @@ void camera_state_y_delay();
 void camera_state_expose();
 void camera_state_exposed();
 void camera_state_ejection();
+void camera_state_darkslide();
 
 // transition functions
 void camera_start_self_timer();
@@ -78,5 +84,15 @@ void camera_expose_auto();
 void camera_expose_manual();
 void camera_expose_mode_B();
 void camera_expose_mode_T();
+
+// Darkslide ejection.
+void camera_eject_darkslide();
+
+// camera setters
+void camera_set_manual(uint8_t value);
+void camera_set_auto();
+void camera_set_pose_T();
+void camera_set_pose_B();
+void camera_set_multi_exposure(bool value);
 
 #endif

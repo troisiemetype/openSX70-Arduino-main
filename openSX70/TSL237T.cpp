@@ -43,8 +43,8 @@ void meter_init(){
 	tsl237_init();
 }
 
-void meter_set_sensitivity(const bool& s){
-	if(s){
+void meter_set_iso(const uint16_t& iso){
+	if(iso == ISO_600){
 		outputCompare = A600;
 	} else {
 		outputCompare = A100;

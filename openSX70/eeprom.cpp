@@ -34,3 +34,52 @@
  */
 
 #include "open_sx70.h"
+
+uint16_t eeprom_address_picture = 10;
+uint16_t eeprom_address_actual_picture = 13;
+
+void eeprom_first_init(){
+	// Two flags for correct eeprom initialisation.
+	EEPROM.update(0, 'S');
+	EEPROM.update(1, 'X');
+	// picture structure initial address
+	EEPROM.update(EE_ADD_PIC, eeprom_address_picture);
+	EEPROM.update(EE_ADD_CUR_PIC, eeprom_address_actual_picture);
+	// setting default ISO
+	EEPROM.update(EE_ADD_ISO, DEFAULT_ISO);
+
+}
+
+void eeprom_init(){
+	// test for correct eeprom initialisation
+	if((EEPROM.read(0) != 'S') && (EEPROM.read(1) != 'X')){
+		eeprom_first_init();
+	}
+
+
+
+}
+
+void eeprom_set_iso(const uint16_t& iso){
+	EEPROM.put(EE_ADD_ISO, iso);
+}
+
+uint16_t eeprom_get_iso(){
+	uint16_t iso = 0;
+	EEPROM.get(EE_ADD_ISO, iso);
+	return iso;
+}
+
+void eeprom_store_data(){
+
+}
+
+void eeprom_export_data(){
+
+}
+
+void eeprom_export_data_csv(){
+
+}
+
+

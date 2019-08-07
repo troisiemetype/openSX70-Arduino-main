@@ -50,6 +50,12 @@ const uint8_t MASK_SW2 = (1 << 4);
 const uint8_t PORT_LED =  6;
 const uint8_t PORT_FLASH = 7;
 
+/*
+void dongle_state_main(){
+	
+}
+*/
+
 bool dongle_init(){
 	// This gets the address on the device.
 	// The function called populates the argument passed by reference
@@ -58,6 +64,7 @@ bool dongle_init(){
 	return 1;
 }
 
+// return 0 if there is no dongle present
 bool dongle_check_presence(){
 	if  (((deviceCount == 0)) && (digitalRead(ONE_WIRE_BUS_PORT) == HIGH)){
 		return 1;
@@ -66,10 +73,12 @@ bool dongle_check_presence(){
 	return 0;
 }
 
+// SW1 is double exposure
 bool dongle_get_sw1(){
 	return (bool)dongle_read_DS2408_IO(SLOT_SW1);
 }
 
+// SW2 is exposure helper
 bool dongle_get_sw2(){
 	return (bool)dongle_read_DS2408_IO(SLOT_SW2);
 }

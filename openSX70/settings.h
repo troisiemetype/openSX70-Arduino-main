@@ -36,11 +36,14 @@
 #ifndef OPENSX70_SETTINGS_H
 #define OPENSX70_SETTINGS_H
 
-#define DEFAULT_ISO       100
+#define ISO_SX70 			125
+#define ISO_600				640
+#define DEFAULT_ISO			ISO_600
 
-#define METER_CHIP        TSL237T
+#define METER_CHIP			TSL237T
 
-#define Y_DELAY           40                // debounce delay after mirror release
+#define Y_DELAY				40              // debounce delay after mirror release, milliseconds
+#define SELF_TIMER_DELAY	10				// self timer delay, seconds
 
 // light sensor used.
 // The light sensor has to be defined here, only one can be defined at once for a system.

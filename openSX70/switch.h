@@ -81,7 +81,7 @@ private:
 	bool _longState;
 	bool _doubleState;
 	bool _isJustPressed;
-	bool _isJustreleased;
+	bool _isJustReleased;
 
 	uint32_t _time;
 	uint32_t _timeDouble;
@@ -99,7 +99,6 @@ extern sw sw_S1;
 extern sw sw_S2;
 extern sw sw_S3;
 extern sw sw_S5;
-extern sw sw_S8;
 extern sw sw_S9;
 
 

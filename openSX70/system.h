@@ -47,6 +47,4 @@ void system_flash_exp_open();
 void system_motor_run();
 void system_motor_stop();
 
-void system_eject_darkslide();
-
 #endif

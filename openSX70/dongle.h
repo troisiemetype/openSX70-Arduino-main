@@ -36,6 +36,16 @@
 #ifndef OPENSX70_DONGLE_H
 #define OPENSX70_DONGLE_H
 
+/*
+enum dongle_state_t{
+	STATE_DONGLE_OFF = 0,
+	STATE_DONGLE_ADDED,
+	STATE_DONGLE_ON,
+	STATE_DONGLE_REMOVED,
+};
+
+extern void dongle_state_main();
+*/
 extern bool dongle_init();
 extern bool dongle_check_presence();
 extern bool dongle_get_sw1();

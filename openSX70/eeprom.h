@@ -53,6 +53,10 @@
 
 // if I understand well the original code, each picture parameters are stored in eeprom for archival purposes.
 
+// eeprom address constant definitions
+const uint8_t EE_ADD_PIC = 10;
+const uint8_t EE_ADD_CUR_PIC = 13;
+const uint8_t EE_ADD_ISO = 20;
 
 /* functions
  *
@@ -64,8 +68,8 @@
 void eeprom_first_init();
 void eeprom_init();						// calls eeprom_first_init() if first run
 
-void eeprom_set_iso();
-void eeprom_get_iso();
+void eeprom_set_iso(const uint16_t& iso);
+uint16_t eeprom_get_iso();
 
 void eeprom_store_data();
 void eeprom_export_data();

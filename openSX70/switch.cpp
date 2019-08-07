@@ -39,30 +39,26 @@ sw sw_S1;
 sw sw_S2;
 sw sw_S3;
 sw sw_S5;
-sw sw_S8;
 sw sw_S9;
 
 // Initialise every switch
 void sw_init(){
 	sw_S1.init(PIN_S1, LOW);
 	sw_S1.set_debounce_delay(5);
-	sw_S1.set_long_delay(350);
+	sw_S1.set_long_delay(500);
 	sw_S1.set_double_delay(250);
 
 	sw_S2.init(PIN_S2, LOW);
-	sw_S1.set_debounce_delay(5);
+	sw_S2.set_debounce_delay(5);
 
 	sw_S3.init(PIN_S3, HIGH);
-	sw_S1.set_debounce_delay(5);
+	sw_S3.set_debounce_delay(5);
 
 	sw_S5.init(PIN_S5, HIGH);
-	sw_S1.set_debounce_delay(5);
-
-	sw_S8.init(PIN_S8, LOW);
-	sw_S1.set_debounce_delay(5);
+	sw_S5.set_debounce_delay(5);
 
 	sw_S9.init(PIN_S9, LOW);
-	sw_S1.set_debounce_delay(5);
+	sw_S9.set_debounce_delay(5);
 }
 
 
@@ -87,7 +83,6 @@ void sw::init(bool active){
 
 	}
 
-	_pressState = false;
 	_longState = false;
 	_doubleState= false;
 
@@ -176,7 +171,7 @@ bool sw::update(bool state){
 	}
 
 	// here we check for a long press
-	if(!_longState && ((instantTime - _Time) > _longDelay)){
+	if(!_longState && ((instantTime - _time) > _longDelay)){
 		_longState = true;
 		return true;
 	}
@@ -188,7 +183,7 @@ bool sw::is_pressed(){
 	return _nowState ^ _invert;
 }
 
-bool sw::is_release(){
+bool sw::is_released(){
 	return (!_nowState) ^ _invert;
 }
 
