@@ -175,15 +175,17 @@ void loop(){
 		if(selector < 12){
 			camera_set_manual(selector);
 		} else if(selector == 12){
-			camera_set_auto(ISO_600);
+			camera_set_auto();
+			meter_set_iso(ISO_600);
 		} else if(selector == 13){
-			camera_set_auto(ISO_SX70);
+			camera_set_auto();
+			meter_set_iso(ISO_SX70);
 		} else if(selector == 14){
 			camera_set_pose_T();
 		} else if(selector == 15){
 			camera_set_pose_B();
 		} else {
-			camera_set_auto(DEFAULT_ISO);
+			camera_set_auto();
 		}
 
 		camera_set_multi_exposure(sw1);

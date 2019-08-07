@@ -202,7 +202,7 @@ void camera_state_ejection(){
 // First we wait for S3 to open (mirror up)
 // Then we wait for S5 to close (mirror down, system ready to shoot)
 void camera_state_darkslide(){
-	if(camera_state == STATE_DARSLIDE_1){
+	if(camera_state == STATE_DARKSLIDE_1){
 		if(sw_S3.is_released()){
 			camera_state = STATE_DARKSLIDE_2;
 			system_shutter_half();
