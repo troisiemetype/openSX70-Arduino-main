@@ -39,6 +39,8 @@ DS2408 ds(ONE_WIRE_BUS_PORT);
 Device dongleDevice;
 uint8_t deviceCount = 0;
 
+dongle_state_t dongle_state = DONGLE_STATE_OFF;
+
 const uint8_t SLOT_SELECTOR = 0;
 const uint8_t SLOT_SW1 = 1;
 const uint8_t SLOT_SW2 = 2;
@@ -59,18 +61,29 @@ void dongle_state_main(){
 bool dongle_init(){
 	// This gets the address on the device.
 	// The function called populates the argument passed by reference
-	if(!ds.findsingle(&dongleDevice)) return 0;
+	deviceCount = ds.findsingle(&dongleDevice);
+	if(!deviceCount){
+		dongle_state = DONGLE_STATE_OFF;
+		return 0;
+	}
 	dongle_init_DS2408();
+	dongle_state = DONGLE_STATE_ON;
 	return 1;
 }
 
-// return 0 if there is no dongle present
-bool dongle_check_presence(){
-	if  (((deviceCount == 0)) && (digitalRead(ONE_WIRE_BUS_PORT) == HIGH)){
-		return 1;
+// handle the dongle presence.
+dongle_state_t dongle_check_presence(){
+	if(dongle_state == DONGLE_STATE_REMOVED) dongle_state = DONGLE_STATE_OFF;
+
+	if((dongle_state = DONGLE_STATE_OFF) && (digitalRead(ONE_WIRE_BUS_PORT) == LOW)){
+		dongle_state = DONGLE_STATE_ADDED;
+		dongle_init();
+	} else if((dongle_state = DONGLE_STATE_ON) && (digitalRead(ONE_WIRE_BUS_PORT) == HIGH)){
+		dongle_state = DONGLE_STATE_REMOVED;
+
 	}
 
-	return 0;
+	return dongle_state;
 }
 
 // SW1 is double exposure

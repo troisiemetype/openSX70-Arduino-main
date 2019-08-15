@@ -163,7 +163,9 @@ void loop(){
 	// read dongle
 	// Only if there is a dongle attached
 
-	if(!dongle_check_presence()){
+	dongle_state_t dongle = dongle_check_presence();
+
+	if(dongle == DONGLE_STATE_ON){
 		bool sw1 = 0;
 		bool sw2 = 0;
 		uint8_t selector = 0;
@@ -202,6 +204,9 @@ void loop(){
 			meter_set_iso(iso);
 			eeprom_set_iso(iso);
 		}
+	} else if(dongle == DONGLE_STATE_REMOVED){
+		meter_set_iso(iso);
+		camera_set_auto();
 	}
 
 	camera_state_main();
