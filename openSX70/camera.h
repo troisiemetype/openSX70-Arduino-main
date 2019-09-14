@@ -49,8 +49,7 @@ enum camera_state_t{
 	STATE_EXPOSE,
 	STATE_EXPOSED,
 	STATE_EJECTION,
-	STATE_DARKSLIDE_1,
-	STATE_DARKSLIDE_2,
+	STATE_DARKSLIDE,
 };
 
 enum camera_mode_t{
@@ -61,7 +60,7 @@ enum camera_mode_t{
 };
 
 // state functions. These should return a state and take a parameter
-void camera_state_main();
+camera_state_t camera_state_main();
 void camera_state_idle();
 void camera_state_self_timer();
 void camera_state_shutter_close();

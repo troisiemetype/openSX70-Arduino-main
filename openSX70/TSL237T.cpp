@@ -39,6 +39,8 @@ volatile bool integrationFinished = 0;
 
 uint16_t outputCompare = A100;
 
+const uint8_t PIN_OE = 9;
+
 void meter_init(){
 	tsl237_init();
 }
@@ -72,6 +74,9 @@ bool meter_update(){
 
 // initialise Timer 1 for light sensor integration.
 void tsl237_init(){
+	pinMode(PIN_OE, OUTPUT);
+	digitalWrite(PIN_OE, LOW);
+
 	cli();
 	// Clear all interrupts flags
 	TIFR1 = (1 << ICF1) | (1 << OCF1B) | (1 << OCF1A) | (1 << TOV1);
@@ -105,5 +110,6 @@ void tsl237_start_integration(){
 ISR(TIMER1_COMPA_vect){
 	TIMSK1 = 0;
 	integrationFinished = 1;
+
 	// function / flag.
 }

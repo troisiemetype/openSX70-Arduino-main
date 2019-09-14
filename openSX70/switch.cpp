@@ -45,16 +45,16 @@ sw sw_S9;
 void sw_init(){
 	sw_S1.init(PIN_S1, LOW);
 	sw_S1.set_debounce_delay(5);
-	sw_S1.set_long_delay(500);
+	sw_S1.set_long_delay(200);
 	sw_S1.set_double_delay(250);
 
 	sw_S2.init(PIN_S2, LOW);
 	sw_S2.set_debounce_delay(5);
 
-	sw_S3.init(PIN_S3, HIGH);
+	sw_S3.init(PIN_S3, LOW);
 	sw_S3.set_debounce_delay(5);
 
-	sw_S5.init(PIN_S5, HIGH);
+	sw_S5.init(PIN_S5, LOW);
 	sw_S5.set_debounce_delay(5);
 
 	sw_S9.init(PIN_S9, LOW);
@@ -68,8 +68,7 @@ void sw::init(bool active){
 	_invert = !active;
 
 	// initial states are not the same when the pin is active low or active high
-	// 
-	if(!_invert){
+	if(_invert){
 		_now = true;
 		_prev = true;
 		_nowState = true;
@@ -92,6 +91,29 @@ void sw::init(bool active){
 	_longDelay = 500;
 	_doubleDelay = 200;
 
+/*
+	Serial.print("sw");
+	Serial.print('\t');
+	Serial.println(_pin);
+
+	Serial.print("now");
+	Serial.print('\t');
+	Serial.println(_now);
+
+	Serial.print("prev");
+	Serial.print('\t');
+	Serial.println(_prev);
+
+	Serial.print("nowState");
+	Serial.print('\t');
+	Serial.println(_nowState);
+
+	Serial.print("prevState");
+	Serial.print('\t');
+	Serial.println(_prevState);
+
+	Serial.println();
+*/
 }
 
 void sw::init(uint8_t pin, bool active){

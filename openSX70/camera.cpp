@@ -57,7 +57,7 @@ Timer exposure_timer = Timer();
 // We may check all the user input and switches here before the switch statement.
 // We also may check them only when needed, but it's needed to have them tested before and after,
 // so we can debounce them.
-void camera_state_main(){
+camera_state_t camera_state_main(){
 	// check the inputs
 	// trigger button
 	sw_S1.update();
@@ -95,15 +95,13 @@ void camera_state_main(){
 		case STATE_EJECTION:
 			camera_state_ejection();
 			break;
-		case STATE_DARKSLIDE_1:
-			camera_state_darkslide();
-			break;
-		case STATE_DARKSLIDE_2:
+		case STATE_DARKSLIDE:
 			camera_state_darkslide();
 			break;
 		default:
 			break;
 	}
+	return camera_state;
 }
 // STATE_IDLE handler
 // Check S1 for long clic (take picture) or for double clic (self-timer)
@@ -117,6 +115,7 @@ void camera_state_idle(){
 		camera_state = STATE_SELF_TIMER;
 	} else if (sw_S1.is_long_pressed()){
 		system_shutter_close();
+		system_motor_run();
 		camera_state = STATE_SHUTTER_CLOSE;		
 	}
 }
@@ -192,6 +191,7 @@ void camera_state_exposed(){
 void camera_state_ejection(){
 	if(sw_S5.is_pressed()){
 		system_motor_stop();
+		system_shutter_open();
 		camera_state = STATE_IDLE;
 	}
 }
@@ -202,19 +202,9 @@ void camera_state_ejection(){
 // First we wait for S3 to open (mirror up)
 // Then we wait for S5 to close (mirror down, system ready to shoot)
 void camera_state_darkslide(){
-	if(camera_state == STATE_DARKSLIDE_1){
-		if(sw_S3.is_released()){
-			camera_state = STATE_DARKSLIDE_2;
-			system_shutter_half();
-		}
-
-	} else if(camera_state == STATE_DARKSLIDE_2){
-		if(sw_S3.is_pressed()){
-			// Mirror is down, system armed, the darkslide ejection cycle has ended.
-			system_motor_stop();
-			system_shutter_open();
-			camera_state = STATE_IDLE;
-		}
+	if(sw_S5.is_released()){
+		system_shutter_half();
+		camera_state = STATE_EJECTION;
 	}
 }
 
@@ -293,8 +283,8 @@ void camera_expose(){
 // handle auto exposure.
 // If meter has integrated a sufficient quantity of light, we stop exposure !
 void camera_expose_auto(){
+//	if(meter_update()) camera_stop_exposure();
 	if(meter_update()) camera_stop_exposure();
-
 }
 
 void camera_expose_manual(){
@@ -315,7 +305,7 @@ void camera_expose_mode_T(){
 void camera_eject_darkslide(){
 	system_shutter_close();
 	system_motor_run();
-	camera_state = STATE_DARKSLIDE_1;
+	camera_state = STATE_DARKSLIDE;
 }
 
 void camera_set_manual(uint8_t value){

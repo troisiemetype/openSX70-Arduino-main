@@ -93,16 +93,36 @@
  *
  */
 
- uint16_t iso = DEFAULT_ISO;
+uint16_t iso = DEFAULT_ISO;
+
+Timer horloge_debug = Timer();
 
 
 void setup(){
+
+	Serial.begin(115200);
+	horloge_debug.init();
+	horloge_debug.setDelay(200);
+	horloge_debug.start(Timer::LOOP);
+
+//	Serial.println(PIN_S1);
 
 	// Init all the outputs and inputs. setting them to idle (default) values.
 	io_init();
 
 	// Init all the switches.
 	sw_init();
+
+	Timer debounce_timer = Timer();
+	debounce_timer.setDelay(100);
+	debounce_timer.start();
+	while(!debounce_timer.update()){
+		sw_S1.update();
+		sw_S2.update();
+		sw_S3.update();
+		sw_S5.update();
+		sw_S9.update();
+	}
 
 	/* OUTPUT pins initialisation.
 	 *		MOTOR
@@ -129,9 +149,9 @@ void setup(){
 	 *	picture struct
 	 */
 
-	eeprom_init();
+//	eeprom_init();
 
-	iso = eeprom_get_iso();
+//	iso = eeprom_get_iso();
 
 
 	// hardware peripherals (light meter, others)
@@ -154,15 +174,26 @@ void setup(){
 	// blink leds for sensivity !
 
 	// test for S8 state and command ejection if needed.
-	if(!digitalRead(PIN_S8)) camera_eject_darkslide();
-   	
+	if(digitalRead(PIN_S8)) camera_eject_darkslide();
+/*
+	Serial.print("sw8");
+	Serial.print('\t');
+	Serial.println(digitalRead(PIN_S8));
+*/
+
+	camera_set_auto();
+
+//	meter_integrate();
+
 }
 
 void loop(){
 
+//	if(horloge_debug.update()) Serial.println(TCNT1);
+
 	// read dongle
 	// Only if there is a dongle attached
-
+/*
 	dongle_state_t dongle = dongle_check_presence();
 
 	if(dongle == DONGLE_STATE_ON){
@@ -208,9 +239,38 @@ void loop(){
 		meter_set_iso(iso);
 		camera_set_auto();
 	}
-
+*/
 	camera_state_main();
 
 	// store picture parameters
+
+}
+
+void debug_print_sw(){
+	Serial.print("sw1");
+	Serial.print('\t');
+	Serial.println(sw_S1.is_pressed());
+
+	Serial.print("sw2");
+	Serial.print('\t');
+	Serial.println(sw_S2.is_pressed());
+
+	Serial.print("sw3");
+	Serial.print('\t');
+	Serial.println(sw_S3.is_pressed());
+
+	Serial.print("sw5");
+	Serial.print('\t');
+	Serial.println(sw_S5.is_pressed());
+
+	Serial.print("sw8");
+	Serial.print('\t');
+	Serial.println(digitalRead(PIN_S8));
+
+	Serial.print("sw9");
+	Serial.print('\t');
+	Serial.println(sw_S9.is_pressed());
+
+	Serial.println();
 
 }

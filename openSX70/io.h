@@ -67,7 +67,6 @@
  *			Thus the system is off when folded.
  *		S7 is a power switch which open when the charging door is opened.
  */
-
 // Input pin definition
 const uint8_t PIN_S1 = 12;
 const uint8_t PIN_S2 = 2;
@@ -85,6 +84,7 @@ const uint8_t PIN_MOTOR = A2;
 
 const uint8_t PIN_LED1 = 13;
 const uint8_t PIN_LED2 = A3;
+
 
 void io_init();
 

@@ -43,7 +43,7 @@
 #define METER_CHIP			TSL237T
 
 #define Y_DELAY				40              // debounce delay after mirror release, milliseconds
-#define SELF_TIMER_DELAY	10				// self timer delay, seconds
+#define SELF_TIMER_DELAY	3				// self timer delay, seconds
 
 // light sensor used.
 // The light sensor has to be defined here, only one can be defined at once for a system.
